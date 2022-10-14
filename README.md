@@ -46,6 +46,22 @@ triggers an evaluation. Let's look at the example of `2 + 3 * 4 =`. It is scanne
  - evaluate: `6 +` | `4 )`
  - `10 )` -> result is `10`
 
+## Keypad overloading
+
+The keypad does different things depending on whether it's expecting a unary or
+binary operation. The binary operations are `+` `-` `×` `÷` but the same buttons
+are used for `|>` `-` `√(` and `(` respectively. The pipe triangle `|>` might not
+be familiar to some readers: it copies the result of a calculation into the next
+calculation.
+
+(This operator is seen in some functional programming languages that I haven't
+learned yet. If I understand correctly, in ML-family languages like OCaml and F#
+instead of saying `f(x)` you can say either `f x` or `x |> f`)
+
+The enter button displays `)` if there is a unary operation on the stack that it
+would match and `=` if not. If a binary operation can be repeated it switches to
+🔁 until the user enters a number.
+
 #### Copyright, distribution, and hosting
 
 Glasswings' Shuntyard Calculator is copyright 2022 by Glasswings
