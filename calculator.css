@@ -17,7 +17,6 @@ button {
 }
 
 .calculator {
-    min-height: 570px;
     max-width: 480px;
     margin: auto;
     background-color: bisque;
@@ -35,4 +34,8 @@ button {
 
 .calculator .keypad {
     display: grid;
+    height: 520px;
+    padding: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
 }
