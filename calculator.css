@@ -2,3 +2,37 @@
     You can redistribute, host, and/or modify it under the GNU Affero General Public License
     which should be hosted alongside it and its source code, but you can also get a copy
     of the license or later versions from https://www.gnu.org/licenses/ */
+
+@import url('https://fonts.googleapis.com/css?family=Orbitron');
+
+:root {
+    background-color: #443c4c;
+    color: rgb(216, 218, 240);
+    font-family: Orbitron;
+}
+
+button {
+    font-family: Orbitron;
+    font-weight: 850;
+}
+
+.calculator {
+    min-height: 570px;
+    max-width: 480px;
+    margin: auto;
+    background-color: bisque;
+}
+
+.calculator .screen {
+    background-color: #a66311;
+    color: #c7fff1;
+    width: 96%;
+    padding: 2%;
+    text-align: right;
+    font-size: 38px;
+    font-weight: 750;
+}
+
+.calculator .keypad {
+    display: grid;
+}
