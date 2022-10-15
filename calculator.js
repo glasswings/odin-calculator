@@ -66,6 +66,20 @@ function pushPlus(n) {
 }
 
 /**
+ * Push a multiplication operation onto the stack
+ *
+ * @param n The number entered before the multiplication
+ */
+function pushTimes(n) {
+    const prec = 2;
+    n = popOps(prec, n);
+    const display = `${n} *`;
+    const op = (m) => n * m;
+    calculatorStack.push({display, prec, op});
+    debugStack();
+}
+
+/**
  * Pop a paren or otherwise finish a calculation. Implements the `) =`
  * operation.
  * 
