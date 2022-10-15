@@ -77,12 +77,10 @@ function defBinOp(symbol, prec, binOp) {
  *
  * @param n The number entered before the addition
  */
-const pushPlus = defBinOp('+', 1, (n) => (m) => n + m);
-
-/**
- * Analogous to pushPlus
- */
-const pushTimes = defBinOp('*', 2, (n) => (m) => n * m);
+const pushPlus =    defBinOp('+', 1, (n) => (m) => n + m);
+const pushMinus =   defBinOp('-', 1, (n) => (m) => n - m);
+const pushTimes =   defBinOp('*', 2, (n) => (m) => n * m);
+const pushDiv =     defBinOp('/', 2, (n) => (m) => n / m);
 
 /**
  * Push an opening paren onto the stack

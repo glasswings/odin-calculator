@@ -19,6 +19,6 @@ This branch develops shuntyard logic.
     `(` | `1 +` | `2 ) *` | `3 =`  The finished application will handle this
     interaction as an automatic pipe-forward |>
 
-- [ ]   implement `-` and `/`
+- [X]   implement `-` and `/`
 
 - [ ]   implement `-(` and `squrt(`
