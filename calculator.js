@@ -80,6 +80,17 @@ function pushTimes(n) {
 }
 
 /**
+ * Push an opening paren onto the stack
+ */
+function pushParen() {
+    const prec = 0;
+    const display = "(";
+    const op = (n) => n;
+    calculatorStack.push({display, prec, op});
+    debugStack();
+}
+
+/**
  * Pop a paren or otherwise finish a calculation. Implements the `) =`
  * operation.
  * 

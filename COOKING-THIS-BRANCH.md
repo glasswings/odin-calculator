@@ -13,4 +13,8 @@ This branch develops shuntyard logic.
 
 - [X]   implement `*`
 
-- [ ]   implement `(`
+- [X]   implement `(`
+
+    NOTE: `(1 + 2) * 3 =` has to be fed into this layer as 
+    `(` | `1 +` | `2 ) *` | `3 =`  The finished application will handle this
+    interaction as an automatic pipe-forward |>
