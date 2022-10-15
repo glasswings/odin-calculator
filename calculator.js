@@ -138,6 +138,13 @@ const registerModeResult = (v) => ({
     },
 });
 
+const registerModeInput = (v) => ({
+    value: v,
+    render: function() {
+        return `${v}`;
+    },
+})
+
 var registerMode = registerModeEmpty;
 
 function renderRegister() {
@@ -154,6 +161,11 @@ function setRegModeEmpty() {
 
 function setRegModeResult(v) {
     registerMode = registerModeResult(v);
+    renderRegister();
+}
+
+function setInput(v) {
+    registerMode = registerModeInput(v);
     renderRegister();
 }
 
