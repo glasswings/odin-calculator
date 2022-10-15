@@ -4,7 +4,7 @@ This branch develops shuntyard logic.
 
 ## TODO
 
-- [ ]   create shuntyard state
+- [X]   create shuntyard state
 
 - [ ]   implement `+` and `)=` 
 
