@@ -22,9 +22,10 @@ In INPUT mode, display the number currently being input.
 - [X]   write a function to implement RESULT mode plus debug functions to switch
         between it and EMPTY
 
+- [X]   wire RESULT mode to the result (`) =`) button
 - [ ]   write a debug function to mock INPUT mode
 
-- [ ]   wire RESULT mode to the result (`) =`) button
+- [ ]   wire binary operations to buttons
 
 - [ ]   implement clearing
 
