@@ -37,3 +37,18 @@ function pushPlus(n) {
     calculatorStack.push({display, op});
     debugStack();
 }
+
+/**
+ * Pop a paren or otherwise finish a calculation. Implements the `) =`
+ * operation.
+ * 
+ * @param n The last number entered
+ */
+function popParen(n) {
+    while (0 in calculatorStack) {
+        const oldOp = calculatorStack.pop();
+        n = oldOp.op(n);
+    }
+    console.log(`RESULT: ${n}`);
+    return n;
+}
