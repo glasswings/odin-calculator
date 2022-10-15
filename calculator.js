@@ -18,9 +18,8 @@ function debugStack() {
     for (const op of calculatorStack) {
         console.log(op.display);
     }
+    renderRegister();
 }
-
-debugStack();
 
 /*  ***
     Precedence codes:
@@ -111,6 +110,30 @@ const pushAddInv=   defUnaOp('-(',    (n) => -n);
  */
 function popParen(n) {
     n = popOps(-1, n);
+    debugStack();
     console.log(`RESULT: ${n}`);
     return n;
 }
+
+/* * *
+ * Register display
+ * * */
+
+const registerModeEmpty = {
+    render: function() {
+        if (0 in calculatorStack) {
+            return calculatorStack[calculatorStack.length - 1].display;
+        } else {
+            return "ready";
+        }
+    },
+};
+
+var registerMode = registerModeEmpty;
+
+function renderRegister() {
+    const screen = document.querySelector('.calculator .screen');
+    screen.innerText = registerMode.render();
+}
+
+renderRegister();
