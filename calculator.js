@@ -55,32 +55,34 @@ function popOps(prec, n) {
 }
 
 /**
+ * Define a binary operation function
+ * 
+ * @param symbol    short debugging symbol
+ * @param prec      precedence code
+ * @param binOp     operation in the form of a twice-applied arrow function
+ * @returns         a function that takes the first argument and pushes the
+ *                  operation to the stack
+ */
+function defBinOp(symbol, prec, binOp) {
+    return function(n) {
+        n = popOps(prec, n);
+        const display = `${n} ${symbol}`;
+        calculatorStack.push({display, prec, op: binOp(n)});
+        debugStack();
+    }
+}
+
+/**
  * Push an addition operation onto the stack
  *
  * @param n The number entered before the addition
  */
-function pushPlus(n) {
-    const prec = 1;
-    n = popOps(prec, n);
-    const display = `${n} +`;
-    const op = (m) => n + m;
-    calculatorStack.push({display, prec, op});
-    debugStack();
-}
+const pushPlus = defBinOp('+', 1, (n) => (m) => n + m);
 
 /**
- * Push a multiplication operation onto the stack
- *
- * @param n The number entered before the multiplication
+ * Analogous to pushPlus
  */
-function pushTimes(n) {
-    const prec = 2;
-    n = popOps(prec, n);
-    const display = `${n} *`;
-    const op = (m) => n * m;
-    calculatorStack.push({display, prec, op});
-    debugStack();
-}
+const pushTimes = defBinOp('*', 2, (n) => (m) => n * m);
 
 /**
  * Push an opening paren onto the stack
