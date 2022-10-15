@@ -13,7 +13,15 @@ empty.
 In RESULT mode, display `) = N` if there are more operations on the stack or `=
 N` if the stack is empty.
 
-In INPUT mode, display the number currently being input. 
+In INPUT mode, display the number currently being input.
+
+## Clearing
+
+Clearing INPUT or RESULT mode goes to EMPTY
+Clearing EMPTY removes the last operation from the stack
+
+I... *think* that results in something useable - no actually I'd rather take the
+value back out of a binary operation, but that will require a bit more bookkeeping.
 
 ## TODO
 
@@ -27,8 +35,13 @@ In INPUT mode, display the number currently being input.
 
 - [X]   wire binary operations to buttons
 
-- [ ]   implement clearing
+- [X]   implement clearing
 
 - [ ]   implement real input
 
 - [ ]   implement unary operations
+
+later:
+
+- [ ]   implement clearing so that clearing `1 +` from the top of the stack puts
+        you back in INPUT mode

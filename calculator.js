@@ -127,6 +127,12 @@ const registerModeEmpty = {
             return "ready";
         }
     },
+    clear: function() {
+        if (0 in calculatorStack) {
+            calculatorStack.pop();
+            renderRegister();
+        }
+    },
 };
 
 const registerModeResult = (v) => ({
@@ -138,6 +144,7 @@ const registerModeResult = (v) => ({
             return `= ${v}`;
         }
     },
+    clear: setRegModeEmpty,
 });
 
 const registerModeInput = (v) => ({
@@ -145,6 +152,7 @@ const registerModeInput = (v) => ({
     render: function() {
         return `${v}`;
     },
+    clear: setRegModeEmpty,
 })
 
 var registerMode = registerModeEmpty;
@@ -185,6 +193,15 @@ document.querySelector('.calculator [data-key="EXEC"]')
      const result = popParen(registerMode.value);
      setRegModeResult(result);
  }
+});
+
+/**
+ * clear key
+ */
+document.querySelector('.calculator [data-key="CLR"]')
+    .addEventListener('click', (ev) =>
+{
+    registerMode.clear();
 });
 
 /**
