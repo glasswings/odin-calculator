@@ -23,7 +23,7 @@ In INPUT mode, display the number currently being input.
         between it and EMPTY
 
 - [X]   wire RESULT mode to the result (`) =`) button
-- [ ]   write a debug function to mock INPUT mode
+- [X]   write a debug function to mock INPUT mode
 
 - [ ]   wire binary operations to buttons
 
