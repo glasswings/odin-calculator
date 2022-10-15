@@ -60,7 +60,7 @@ instead of saying `f(x)` you can say either `f x` or `x |> f`)
 
 The enter button displays `)` if there is a unary operation on the stack that it
 would match and `=` if not. If a binary operation can be repeated it switches to
-🔁 until the user enters a number.
+↫ until the user enters a number.
 
 #### Copyright, distribution, and hosting
 
