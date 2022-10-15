@@ -83,15 +83,23 @@ const pushTimes =   defBinOp('*', 2, (n) => (m) => n * m);
 const pushDiv =     defBinOp('/', 2, (n) => (m) => n / m);
 
 /**
+ * Define a unary operation function
+ *
+ * @param symbol    short debugging symbol
+ * @param unaOp     operation
+ * @returns         a function that pushes the operation to the stack
+ */
+function defUnaOp(symbol, unaOp) {
+    return function() {
+        calculatorStack.push({display: symbol, prec: 0, op: unaOp});
+        debugStack();
+    }
+}
+
+/**
  * Push an opening paren onto the stack
  */
-function pushParen() {
-    const prec = 0;
-    const display = "(";
-    const op = (n) => n;
-    calculatorStack.push({display, prec, op});
-    debugStack();
-}
+const pushParen =   defUnaOp('(',     (n) => n);
 
 /**
  * Pop a paren or otherwise finish a calculation. Implements the `) =`
