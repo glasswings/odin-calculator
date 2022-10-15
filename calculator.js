@@ -40,7 +40,10 @@ debugStack();
 function popOps(prec, n) {
     while (0 in calculatorStack) {
         const oldOp = calculatorStack.pop();
-        if (oldOp.prec >= prec) {
+        if (prec == -1 && oldOp.prec == 0) {
+            n = oldOp.op(n);
+            break;
+        } else if (oldOp.prec >= prec) {
             n = oldOp.op(n);
             continue;
         } else {
