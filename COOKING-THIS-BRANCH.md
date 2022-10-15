@@ -21,4 +21,4 @@ This branch develops shuntyard logic.
 
 - [X]   implement `-` and `/`
 
-- [ ]   implement `-(` and `squrt(`
+- [X]   implement `-(` and `squrt(`

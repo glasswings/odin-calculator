@@ -100,6 +100,8 @@ function defUnaOp(symbol, unaOp) {
  * Push an opening paren onto the stack
  */
 const pushParen =   defUnaOp('(',     (n) => n);
+const pushSqrt =    defUnaOp('sqrt(', (n) => Math.sqrt(n));
+const pushAddInv=   defUnaOp('-(',    (n) => -n);
 
 /**
  * Pop a paren or otherwise finish a calculation. Implements the `) =`
