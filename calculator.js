@@ -21,3 +21,19 @@ function debugStack() {
 }
 
 debugStack();
+
+/**
+ * Push an addition operation onto the stack
+ *
+ * @param n The number entered before the addition
+ */
+function pushPlus(n) {
+    while (0 in calculatorStack) {
+        const oldOp = calculatorStack.pop();
+        n = oldOp.op(n);
+    }
+    const display = `${n} +`;
+    const op = (m) => n + m;
+    calculatorStack.push({display, op});
+    debugStack();
+}
