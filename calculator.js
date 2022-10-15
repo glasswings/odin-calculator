@@ -22,19 +22,46 @@ function debugStack() {
 
 debugStack();
 
+/*  ***
+    Precedence codes:
+
+    1: + -
+    2: * /
+
+    *** */
+
+/**
+ * Pop operations off the stack
+ *
+ * @param prec  precedence code of the incoming operation
+ * @param n     last number entered
+ * @return      result of popped operations
+ */
+function popOps(prec, n) {
+    while (0 in calculatorStack) {
+        const oldOp = calculatorStack.pop();
+        if (oldOp.prec >= prec) {
+            n = oldOp.op(n);
+            continue;
+        } else {
+            calculatorStack.push(oldOp);
+            break;
+        }
+    }
+    return n;
+}
+
 /**
  * Push an addition operation onto the stack
  *
  * @param n The number entered before the addition
  */
 function pushPlus(n) {
-    while (0 in calculatorStack) {
-        const oldOp = calculatorStack.pop();
-        n = oldOp.op(n);
-    }
+    const prec = 1;
+    n = popOps(prec, n);
     const display = `${n} +`;
     const op = (m) => n + m;
-    calculatorStack.push({display, op});
+    calculatorStack.push({display, prec, op});
     debugStack();
 }
 
@@ -45,10 +72,7 @@ function pushPlus(n) {
  * @param n The last number entered
  */
 function popParen(n) {
-    while (0 in calculatorStack) {
-        const oldOp = calculatorStack.pop();
-        n = oldOp.op(n);
-    }
+    n = popOps(-1, n);
     console.log(`RESULT: ${n}`);
     return n;
 }
