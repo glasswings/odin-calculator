@@ -181,8 +181,29 @@ function setInput(v) {
 document.querySelector('.calculator [data-key="EXEC"]')
     .addEventListener('click', (ev) =>
 {
-    if ("value" in registerMode) {
-        const result = popParen(registerMode.value);
-        setRegModeResult(result);
-    }
+ if ("value" in registerMode) {
+     const result = popParen(registerMode.value);
+     setRegModeResult(result);
+ }
 });
+
+/**
+ * Register click listener to implement an operation key
+ * @param dataKey   data-key attribute in the DOM
+ * @param binOp     pushFoo function defined using `defBinOp`
+ */
+function wireOperationKey(dataKey, binOp) {
+    document.querySelector(`.calculator [data-key="${dataKey}"]`)
+        .addEventListener('click', (ev) => 
+    {
+        if ("value" in registerMode) {
+            binOp(registerMode.value);
+            setRegModeEmpty();
+        }
+    });
+}
+
+wireOperationKey('ADD', pushPlus);
+wireOperationKey('SUB', pushMinus);
+wireOperationKey('MUL', pushTimes);
+wireOperationKey('DIV', pushDiv);

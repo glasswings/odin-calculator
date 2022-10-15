@@ -25,8 +25,10 @@ In INPUT mode, display the number currently being input.
 - [X]   wire RESULT mode to the result (`) =`) button
 - [X]   write a debug function to mock INPUT mode
 
-- [ ]   wire binary operations to buttons
+- [X]   wire binary operations to buttons
 
 - [ ]   implement clearing
 
-- [ ]   implement operations
+- [ ]   implement real input
+
+- [ ]   implement unary operations
