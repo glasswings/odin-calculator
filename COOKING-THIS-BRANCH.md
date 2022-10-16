@@ -45,3 +45,5 @@ later:
 
 - [ ]   implement clearing so that clearing `1 +` from the top of the stack puts
         you back in INPUT mode
+
+- [ ]   ensure that even the widest numbers can't overflow the display

@@ -95,7 +95,7 @@ function popOps(prec, n) {
 function defBinOp(symbol, prec, binOp) {
     return function(n) {
         n = popOps(prec, n);
-        const display = `${n} ${symbol}`;
+        const display = `${formatNumber(n, 9)} ${symbol}`;
         calculatorStack.push({display, prec, op: binOp(n)});
         debugStack();
     }
@@ -169,9 +169,9 @@ const registerModeResult = (v) => ({
     value: v,
     render: function() {
         if (0 in calculatorStack) {
-            return `..) = ${v}`
+            return `..) = ${formatNumber(v, 9)}`
         } else {
-            return `= ${v}`;
+            return `= ${formatNumber(v, 12)}`;
         }
     },
     clear: setRegModeEmpty,
