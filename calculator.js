@@ -169,9 +169,9 @@ const registerModeResult = (v) => ({
     value: v,
     render: function() {
         if (calculatorStack_new.empty()) {
-            return `= ${v}`;
+            return `= ${formatNumber(v, 12)}`;
         } else {
-            return `..) = ${v}`
+            return `..) = ${formatNumber(v, 9)}`
         }
     },
     clear: setRegModeEmpty,
