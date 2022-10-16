@@ -177,12 +177,23 @@ const registerModeResult = (v) => ({
     clear: setRegModeEmpty,
 });
 
-const registerModeInput = (v) => ({
-    value: v,
+const registerModeInput = (s) => ({
+    value: +s,
+    text: "" + s,
     render: function() {
-        return `${v}`;
+        if (this.text.length == 0)
+            return '0';
+        else
+            return this.text
     },
-    clear: setRegModeEmpty,
+    clear: function() {
+        const l = this.text.length;
+        if (l <= 1) {
+            setRegModeEmpty();
+        } else {
+            setRegModeInput(this.text.substring(0, l - 1));
+        }
+    },
 })
 
 var registerMode = registerModeEmpty;
@@ -201,6 +212,11 @@ function setRegModeEmpty() {
 
 function setRegModeResult(v) {
     registerMode = registerModeResult(v);
+    renderRegister();
+}
+
+function setRegModeInput(s) {
+    registerMode = registerModeInput(s)
     renderRegister();
 }
 
