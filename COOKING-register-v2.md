@@ -37,7 +37,7 @@ value back out of a binary operation, but that will require a bit more bookkeepi
 
 - [X]   implement clearing
 
-- [ ]   implement real input
+- [X]   implement real input
 
 - [ ]   implement unary operations
 
@@ -46,4 +46,6 @@ later:
 - [ ]   implement clearing so that clearing `1 +` from the top of the stack puts
         you back in INPUT mode
 
+- [ ]   handle initial 0 better (try starting an input with 0)
+- [ ]   limit width of input
 - [ ]   ensure that even the widest numbers can't overflow the display
