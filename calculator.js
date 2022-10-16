@@ -3,6 +3,36 @@
     which should be hosted alongside it and its source code, but you can also get a copy
     of the license or later versions from https://www.gnu.org/licenses/ */
 
+/* * *
+ * Utility
+ * * */
+
+/**
+ * Format a number to a string, limiting the number of digits to the right of
+ * the first.
+ *
+ * @param n the number
+ */
+function formatNumber(n, nDigits) {
+    const absN = Math.abs(n);
+    const bigThreshold = 10 ** nDigits;
+    if (1 / bigThreshold < absN && absN < bigThreshold) {
+        // fixed notation
+        const formatted = n.toFixed(nDigits).substring(0, nDigits + 2);
+        const is0orDot = (c) => c == '0' || c == '.';
+        let l = formatted.length;
+        while (l > 1 && is0orDot(formatted[l-1])) l--;
+        return formatted.substring(0, l);
+    } else {
+        // exponential notation
+        return formatted = n.toExponential(nDigits);
+    }
+}
+
+/* * *
+ * Stack
+ * * */
+
 /**
  * A stack of calculator operations
  *
