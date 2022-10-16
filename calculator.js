@@ -194,6 +194,10 @@ const registerModeInput = (s) => ({
             setRegModeInput(this.text.substring(0, l - 1));
         }
     },
+    pokeInput: function(input) {
+        if (!isNaN(+(this.text + input)))
+            setRegModeInput(this.text + input);
+    },
 })
 
 var registerMode = registerModeEmpty;
@@ -270,3 +274,19 @@ wireOperationKey('ADD', calculatorStack_new.defBinOp('+', 1, (a) => (b) => a + b
 wireOperationKey('SUB', calculatorStack_new.defBinOp('-', 1, (a) => (b) => a - b));
 wireOperationKey('MUL', calculatorStack_new.defBinOp('*', 2, (a) => (b) => a * b));
 wireOperationKey('DIV', calculatorStack_new.defBinOp('/', 2, (a) => (b) => a / b));
+
+function pushInputKey(label) {
+    if (!("pokeInput" in registerMode))
+        setRegModeInput('');
+    registerMode.pokeInput(label);
+}
+
+document.querySelectorAll('.calculator button')
+    .forEach((button) =>
+{
+    if (('data-key' in button.attributes)) {
+        const dataKey = button.attributes['data-key'].value;
+        if (dataKey.length == 1)
+            button.addEventListener('click', (ev) => pushInputKey(dataKey));
+    }
+});
