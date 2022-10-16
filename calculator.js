@@ -3,9 +3,41 @@
     which should be hosted alongside it and its source code, but you can also get a copy
     of the license or later versions from https://www.gnu.org/licenses/ */
 
-//MOCK
-function formatNumber(a, b) {
-    return "" + a;
+/* * *
+ * Utility
+ * * */
+
+/**
+ * Format a number to a string, limiting the number of digits to the right of
+ * the first.
+ *
+ * @param n the number
+ */
+function formatNumber(n, nDigits) {
+    const absN = Math.abs(n);
+    const bigThreshold = 10 ** nDigits;
+    if (1 / bigThreshold < absN && absN < bigThreshold) {
+        // fixed notation
+        const formatted = n.toFixed(nDigits).substring(0, nDigits + 2);
+        let l = formatted.length;
+        trimLoop:
+        while (l > 1) {
+            switch (formatted[l - 1]) {
+            case '0':
+                l--;
+                continue trimLoop;
+            case '.':
+                l--;
+                break trimLoop;
+            default:
+                break trimLoop;
+            }
+        }
+        return formatted.substring(0, l);
+    } else {
+        // exponential notation
+        return formatted = n.toExponential(nDigits);
+    }
 }
 
 /* BRANCH shuntyard-v2 BEGIN */
