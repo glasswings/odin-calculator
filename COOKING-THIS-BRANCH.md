@@ -39,9 +39,12 @@ value back out of a binary operation, but that will require a bit more bookkeepi
 
 - [X]   implement real input
 
-- [ ]   implement unary operations
+- [X]   implement unary operations
+        (parentheses and square root only)
 
 later:
+
+- [ ]   handle prefix `-` key
 
 - [ ]   implement clearing so that clearing `1 +` from the top of the stack puts
         you back in INPUT mode
