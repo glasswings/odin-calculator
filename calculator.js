@@ -258,22 +258,28 @@ document.querySelector('.calculator [data-key="CLR"]')
  * Register click listener to implement an operation key
  * @param dataKey   data-key attribute in the DOM
  * @param binOp     pushFoo function defined using `defBinOp`
+ * @param unaOp     pushBar function defined using `defUnaOp` (or null)
  */
-function wireOperationKey(dataKey, binOp) {
+function wireOperationKey(dataKey, binOp, unaOp) {
     document.querySelector(`.calculator [data-key="${dataKey}"]`)
         .addEventListener('click', (ev) => 
     {
         if ("value" in registerMode) {
             binOp(registerMode.value);
             setRegModeEmpty();
+        } else if (unaOp != null) {
+            unaOp();
+            setRegModeEmpty();
         }
     });
 }
 
-wireOperationKey('ADD', calculatorStack_new.defBinOp('+', 1, (a) => (b) => a + b));
-wireOperationKey('SUB', calculatorStack_new.defBinOp('-', 1, (a) => (b) => a - b));
-wireOperationKey('MUL', calculatorStack_new.defBinOp('*', 2, (a) => (b) => a * b));
-wireOperationKey('DIV', calculatorStack_new.defBinOp('/', 2, (a) => (b) => a / b));
+wireOperationKey('ADD', calculatorStack_new.defBinOp('+', 1, (a) => (b) => a + b), null);
+wireOperationKey('SUB', calculatorStack_new.defBinOp('-', 1, (a) => (b) => a - b), null);
+wireOperationKey('MUL', calculatorStack_new.defBinOp('*', 2, (a) => (b) => a * b),
+                        calculatorStack_new.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
+wireOperationKey('DIV', calculatorStack_new.defBinOp('/', 2, (a) => (b) => a / b),
+                        calculatorStack_new.defUnaOp('(', (a) => a));
 
 function pushInputKey(label) {
     if (!("pokeInput" in registerMode))
