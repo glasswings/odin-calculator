@@ -112,3 +112,26 @@ function debugStack() {
     console.log(calculatorStack_new.debugStack());
     renderRegister();
 }
+
+/* * *
+ * Register display
+ * * */
+
+const registerModeEmpty = {
+    render: function() {
+        if (calculatorStack_new.empty()) {
+            return "ready";
+        } else {
+            return calculatorStack_new.top();
+        }
+    },
+};
+
+var registerMode = registerModeEmpty;
+
+function renderRegister() {
+    const screen = document.querySelector('.calculator .screen');
+    screen.innerText = registerMode.render();
+}
+
+renderRegister();
