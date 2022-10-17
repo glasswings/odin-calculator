@@ -17,7 +17,7 @@ In INPUT mode, display the number currently being input.
 
 ## TODO
 
-- [ ]   write a function to implement EMPTY mode, 
+- [X]   write a function to implement EMPTY mode,
 
 - [ ]   write a function to implement RESULT mode plus debug functions to switch
         between it and EMPTY
