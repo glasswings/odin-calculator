@@ -50,6 +50,25 @@ const calcStack = () => ({
         }
         return n;
     },
+    /**
+     * Define a function that pushes a binary operation
+     *
+     * @returns         a function that takes the number before the operator
+     *                  and pushes the operation to the stack.
+     * @param display   string to display representing the operation
+     * @param prec      precedence code:
+     *                  1 - addition/subtraction
+     *                  2 - multiplication/division
+     * @param binOp        (a) => (b) => ...
+     */
+    defBinOp: function(symbol, prec, binOp) {
+        const calc = this;
+        return function(firstArg) {
+            const a = calc._popOps(prec, firstArg);
+            const display = `${formatNumber(a, 9)} ${symbol}`;
+            calc._stack.push({display, prec, op: binOp(a)});
+        }
+    },
 });
 
 /* BRANCH shuntyard-v2 END */
