@@ -12,6 +12,6 @@ And it probably needs
 
 - `#popOps()`
 
--  [ ]  Add marker comments to guide future merge/rebase
+-  [X]  Add marker comments to guide future merge/rebase
 -  [ ]  Leave existing interface, refactor that interface to call into the object.
 -  [ ]  Rebase so it doesn't depend on existing `register` branch 
