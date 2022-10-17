@@ -127,6 +127,17 @@ const registerModeEmpty = {
     },
 };
 
+const registerModeResult = (v) => ({
+    value: v,
+    render: function() {
+        if (calculatorStack_new.empty()) {
+            return `= ${v}`;
+        } else {
+            return `..) = ${v}`
+        }
+    },
+});
+
 var registerMode = registerModeEmpty;
 
 function renderRegister() {
@@ -135,3 +146,13 @@ function renderRegister() {
 }
 
 renderRegister();
+
+function setRegModeEmpty() {
+    registerMode = registerModeEmpty;
+    renderRegister();
+}
+
+function setRegModeResult(v) {
+    registerMode = registerModeResult(v);
+    renderRegister();
+}
