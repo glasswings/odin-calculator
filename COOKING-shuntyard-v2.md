@@ -23,7 +23,7 @@ And it probably needs
 -  [ ]  Leave existing interface, refactor that interface to call into the object.
     -  [X]  replace global variable with new temporary one
     -  [X]  empty() top() debugStack()
-    -  [ ]  ensure that they are used where appropriate
+    -  [X]  ensure that they are used where appropriate
     -  [ ]  pushOp() _popOps() popExec() popCancel()
     -  [ ]  remove new global variable
 -  [ ]  Rebase so it doesn't depend on existing `register` branch 
