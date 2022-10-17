@@ -6,6 +6,9 @@ Refactor shuntyard into an object. It should provide
 - `top()` - view of the top operation
 - `debugStack()` - debug view of the entire stack
 - `pushOp()` - Push an operation onto the stack
+    - It makes sense to have separate methods for pushing unary and binary ops,
+      because binary ops need to pop before they push while unary ops never do
+      that.
 - `popExec()` - Execute operations until reaching a paren or the beginning of the expression
 - `popCancel()` - Cancel operation on the top of the stack.
 
@@ -25,5 +28,5 @@ And it probably needs
     -  [X]  empty() top() debugStack()
     -  [X]  ensure that they are used where appropriate
     -  [X]  ~~pushOp()~~ def*Op() _popOps() popExec() popCancel()
-    -  [ ]  ~~remove new global variable~~
--  [ ]  Rebase so it doesn't depend on existing `register` branch 
+    -  [-]  ~~remove new global variable~~
+-  [X]  Rebase so it doesn't depend on existing `register` branch 
