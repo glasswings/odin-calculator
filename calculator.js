@@ -51,6 +51,20 @@ const calcStack = () => ({
         return n;
     },
     /**
+     * Define a function that pushes a unary operation
+     *
+     * @returns         a function that takes no arguments
+     *                  and pushes the operation to the stack.
+     * @param display   string to display representing the operation
+     * @param unaOp        (a) => ...
+     */
+    defUnaOp: function(symbol, unaOp) {
+        const calc = this;
+        return function() {
+            calc._stack.push({display: symbol, prec: 0, op: unaOp});
+        }
+    },
+    /**
      * Define a function that pushes a binary operation
      *
      * @returns         a function that takes the number before the operator
