@@ -3,6 +3,11 @@
     which should be hosted alongside it and its source code, but you can also get a copy
     of the license or later versions from https://www.gnu.org/licenses/ */
 
+//MOCK
+function formatNumber(a, b) {
+    return "" + a;
+}
+
 /* BRANCH shuntyard-v2 BEGIN */
 
 const calcStack = () => ({
@@ -100,3 +105,10 @@ const calcStack = () => ({
 });
 
 /* BRANCH shuntyard-v2 END */
+
+var calculatorStack_new = calcStack();
+
+function debugStack() {
+    console.log(calculatorStack_new.debugStack());
+    renderRegister();
+}
