@@ -7,6 +7,7 @@ Refactor shuntyard into an object. It should provide
 - `debugStack()` - debug view of the entire stack
 - `pushOp()` - Push an operation onto the stack
 - `popExec()` - Execute operations until reaching a paren or the beginning of the expression
+- `popCancel()` - Cancel operation on the top of the stack.
 
 And it probably needs
 
@@ -23,6 +24,6 @@ And it probably needs
     -  [X]  replace global variable with new temporary one
     -  [X]  empty() top() debugStack()
     -  [ ]  ensure that they are used where appropriate
-    -  [ ]  pushOp() _popOps() popExec()
+    -  [ ]  pushOp() _popOps() popExec() popCancel()
     -  [ ]  remove new global variable
 -  [ ]  Rebase so it doesn't depend on existing `register` branch 
