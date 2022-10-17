@@ -156,3 +156,19 @@ function setRegModeResult(v) {
     registerMode = registerModeResult(v);
     renderRegister();
 }
+
+/* * *
+ * Key events
+ * * */
+
+/**
+ * execute key
+ */
+document.querySelector('.calculator [data-key="EXEC"]')
+    .addEventListener('click', (ev) =>
+{
+    if ("value" in registerMode) {
+        const result = calculatorStack_new.popExec(registerMode.value);
+        setRegModeResult(result);
+    }
+});
