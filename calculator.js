@@ -5,4 +5,8 @@
 
 /* BRANCH shuntyard-v2 BEGIN */
 
+const calcStack = () => ({
+    _stack: [],
+});
+
 /* BRANCH shuntyard-v2 END */
