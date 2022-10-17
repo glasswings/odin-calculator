@@ -89,6 +89,14 @@ const calcStack = () => ({
     popCancel: function() {
         this._stack.pop();
     },
+    /**
+     * Execute operations. Implements `)` or `=`
+     *
+     * @param arg The last number entered
+     */
+     popExec: function (arg) {
+        return this._popOps(-1, arg);
+    },
 });
 
 /* BRANCH shuntyard-v2 END */

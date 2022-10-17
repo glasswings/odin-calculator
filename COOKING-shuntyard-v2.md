@@ -20,10 +20,10 @@ And it probably needs
 ## TODO
 
 -  [X]  Add marker comments to guide future merge/rebase
--  [ ]  Leave existing interface, refactor that interface to call into the object.
+-  [X]  Leave existing interface, refactor that interface to call into the object.
     -  [X]  replace global variable with new temporary one
     -  [X]  empty() top() debugStack()
     -  [X]  ensure that they are used where appropriate
-    -  [ ]  pushOp() _popOps() popExec() popCancel()
-    -  [ ]  remove new global variable
+    -  [X]  ~~pushOp()~~ def*Op() _popOps() popExec() popCancel()
+    -  [ ]  ~~remove new global variable~~
 -  [ ]  Rebase so it doesn't depend on existing `register` branch 
