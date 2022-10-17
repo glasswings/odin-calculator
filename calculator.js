@@ -7,6 +7,26 @@
 
 const calcStack = () => ({
     _stack: [],
+    /**
+     * True if the stack is empty
+     */
+    empty: function() {
+        return !(0 in this._stack);
+    },
+    /**
+     * Display string of the top operation, or null if there is none.
+     */
+    top: function() {
+        if (this.empty()) {
+            return null;
+        } else {
+            const l = this._stack.length;
+            return this._stack[l - 1].display;
+        }
+    },
+    debugStack: function() {
+        return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;;
+    },
 });
 
 /* BRANCH shuntyard-v2 END */

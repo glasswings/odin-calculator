@@ -21,7 +21,7 @@ And it probably needs
 -  [X]  Add marker comments to guide future merge/rebase
 -  [ ]  Leave existing interface, refactor that interface to call into the object.
     -  [X]  replace global variable with new temporary one
-    -  [ ]  empty() top() debugStack()
+    -  [X]  empty() top() debugStack()
     -  [ ]  ensure that they are used where appropriate
     -  [ ]  pushOp() _popOps() popExec()
     -  [ ]  remove new global variable
