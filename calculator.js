@@ -83,6 +83,12 @@ const calcStack = () => ({
             calc._stack.push({display, prec, op: binOp(a)});
         }
     },
+    /**
+     * Cancel the topmost operation, if it exists.
+     */
+    popCancel: function() {
+        this._stack.pop();
+    },
 });
 
 /* BRANCH shuntyard-v2 END */
