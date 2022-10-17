@@ -27,6 +27,29 @@ const calcStack = () => ({
     debugStack: function() {
         return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;;
     },
+    /**
+     * Pop operations off the stack
+     *
+     * @param prec  precedence code of the incoming operation
+     * @param n     last number entered
+     * @return      result of popped operations
+     */
+    _popOps: function(prec, n) {
+        while (!this.empty()) {
+            const oldOp = this._stack.pop();
+            if (prec == -1 && oldOp.prec == 0) {
+                n = oldOp.op(n);
+                break;
+            } else if (oldOp.prec >= prec) {
+                n = oldOp.op(n);
+                continue;
+            } else {
+                this._stack.push(oldOp);
+                break;
+            }
+        }
+        return n;
+    },
 });
 
 /* BRANCH shuntyard-v2 END */
