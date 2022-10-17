@@ -184,3 +184,24 @@ document.querySelector('.calculator [data-key="EXEC"]')
         setRegModeResult(result);
     }
 });
+
+/**
+ * Register click listener to implement an operation key
+ * @param dataKey   data-key attribute in the DOM
+ * @param binOp     pushFoo function defined using `defBinOp`
+ */
+function wireOperationKey(dataKey, binOp) {
+    document.querySelector(`.calculator [data-key="${dataKey}"]`)
+        .addEventListener('click', (ev) => 
+    {
+        if ("value" in registerMode) {
+            binOp(registerMode.value);
+            setRegModeEmpty();
+        }
+    });
+}
+
+wireOperationKey('ADD', calculatorStack_new.defBinOp('+', 1, (a) => (b) => a + b));
+wireOperationKey('SUB', calculatorStack_new.defBinOp('-', 1, (a) => (b) => a - b));
+wireOperationKey('MUL', calculatorStack_new.defBinOp('*', 2, (a) => (b) => a * b));
+wireOperationKey('DIV', calculatorStack_new.defBinOp('/', 2, (a) => (b) => a / b));
