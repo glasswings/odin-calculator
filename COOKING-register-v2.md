@@ -44,7 +44,7 @@ value back out of a binary operation, but that will require a bit more bookkeepi
 
 ## Refactor
 
-- [ ]   Put all state in a single global object, both the register state and the
+- [X]   Put all state in a single global object, both the register state and the
         stack
 - [ ]   Move register functions that access that state into methods
 - [ ]   Write a function to wire all keys within a .calculator div to a

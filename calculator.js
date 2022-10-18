@@ -138,10 +138,8 @@ const calcStack = () => ({
 
 /* BRANCH shuntyard-v2 END */
 
-var calculatorStack_new = calcStack();
-
 function debugStack() {
-    console.log(calculatorStack_new.debugStack());
+    console.log(calculator_global.stack.debugStack());
     renderRegister();
 }
 
@@ -149,26 +147,26 @@ function debugStack() {
  * Register display
  * * */
 
-const registerModeEmpty = {
+const registerModeEmpty = () => ({
     render: function() {
-        if (calculatorStack_new.empty()) {
+        if (calculator_global.stack.empty()) {
             return "ready";
         } else {
-            return calculatorStack_new.top();
+            return calculator_global.stack.top();
         }
     },
     clear: function() {
-        if (calculatorStack_new.empty())
+        if (calculator_global.stack.empty())
             return;
-        calculatorStack_new.popCancel();
+        calculator_global.stack.popCancel();
         renderRegister();
     },
-};
+});
 
 const registerModeResult = (v) => ({
     value: v,
     render: function() {
-        if (calculatorStack_new.empty()) {
+        if (calculator_global.stack.empty()) {
             return `= ${formatNumber(v, 12)}`;
         } else {
             return `..) = ${formatNumber(v, 9)}`
@@ -200,32 +198,35 @@ const registerModeInput = (s) => ({
     },
 })
 
-var registerMode = registerModeEmpty;
+var calculator_global = ({
+    stack: calcStack(),
+    registerMode: registerModeEmpty(),
+});
 
 function renderRegister() {
     const screen = document.querySelector('.calculator .screen');
-    screen.innerText = registerMode.render();
+    screen.innerText = calculator_global.registerMode.render();
 }
 
 renderRegister();
 
 function setRegModeEmpty() {
-    registerMode = registerModeEmpty;
+    calculator_global.registerMode = registerModeEmpty();
     renderRegister();
 }
 
 function setRegModeResult(v) {
-    registerMode = registerModeResult(v);
+    calculator_global.registerMode = registerModeResult(v);
     renderRegister();
 }
 
 function setRegModeInput(s) {
-    registerMode = registerModeInput(s)
+    calculator_global.registerMode = registerModeInput(s)
     renderRegister();
 }
 
 function setInput(v) {
-    registerMode = registerModeInput(v);
+    calculator_global.registerMode = registerModeInput(v);
     renderRegister();
 }
 
@@ -239,8 +240,8 @@ function setInput(v) {
 document.querySelector('.calculator [data-key="EXEC"]')
     .addEventListener('click', (ev) =>
 {
-    if ("value" in registerMode) {
-        const result = calculatorStack_new.popExec(registerMode.value);
+    if ("value" in calculator_global.registerMode) {
+        const result = calculator_global.stack.popExec(calculator_global.registerMode.value);
         setRegModeResult(result);
     }
 });
@@ -251,7 +252,7 @@ document.querySelector('.calculator [data-key="EXEC"]')
 document.querySelector('.calculator [data-key="CLR"]')
     .addEventListener('click', (ev) =>
 {
-    registerMode.clear();
+    calculator_global.registerMode.clear();
 });
 
 /**
@@ -264,8 +265,8 @@ function wireOperationKey(dataKey, binOp, unaOp) {
     document.querySelector(`.calculator [data-key="${dataKey}"]`)
         .addEventListener('click', (ev) => 
     {
-        if ("value" in registerMode) {
-            binOp(registerMode.value);
+        if ("value" in calculator_global.registerMode) {
+            binOp(calculator_global.registerMode.value);
             setRegModeEmpty();
         } else if (unaOp != null) {
             unaOp();
@@ -274,17 +275,17 @@ function wireOperationKey(dataKey, binOp, unaOp) {
     });
 }
 
-wireOperationKey('ADD', calculatorStack_new.defBinOp('+', 1, (a) => (b) => a + b), null);
-wireOperationKey('SUB', calculatorStack_new.defBinOp('-', 1, (a) => (b) => a - b), null);
-wireOperationKey('MUL', calculatorStack_new.defBinOp('*', 2, (a) => (b) => a * b),
-                        calculatorStack_new.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
-wireOperationKey('DIV', calculatorStack_new.defBinOp('/', 2, (a) => (b) => a / b),
-                        calculatorStack_new.defUnaOp('(', (a) => a));
+wireOperationKey('ADD', calculator_global.stack.defBinOp('+', 1, (a) => (b) => a + b), null);
+wireOperationKey('SUB', calculator_global.stack.defBinOp('-', 1, (a) => (b) => a - b), null);
+wireOperationKey('MUL', calculator_global.stack.defBinOp('*', 2, (a) => (b) => a * b),
+                        calculator_global.stack.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
+wireOperationKey('DIV', calculator_global.stack.defBinOp('/', 2, (a) => (b) => a / b),
+                        calculator_global.stack.defUnaOp('(', (a) => a));
 
 function pushInputKey(label) {
-    if (!("pokeInput" in registerMode))
+    if (!("pokeInput" in calculator_global.registerMode))
         setRegModeInput('');
-    registerMode.pokeInput(label);
+    calculator_global.registerMode.pokeInput(label);
 }
 
 document.querySelectorAll('.calculator button')
