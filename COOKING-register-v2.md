@@ -51,6 +51,17 @@ value back out of a binary operation, but that will require a bit more bookkeepi
         calculator-register object.
 - [ ]   Add a second calculator to the page, just to see if it works.
 
+### Dependencies
+
+`registerMode*()` factories capture `calculatorStack_new`.
+    solution: method parameter of `.render()` and `.clear()`
+
+`renderRegister()` uses `querySelector()` to find the screen
+    solution: method of calculator object, constructor needs to be told which
+    calculator div to render to
+
+`setRegMode*()` likewise need to be methods of the calculator object
+
 ## Later:
 
 - [ ]   handle prefix `-` key
