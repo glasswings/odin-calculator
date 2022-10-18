@@ -148,55 +148,55 @@ function debugStack() {
  * * */
 
 const registerModeEmpty = () => ({
-    render: function() {
-        if (calculator_global.stack.empty()) {
+    render: function(calc) {
+        if (calc.stack.empty()) {
             return "ready";
         } else {
-            return calculator_global.stack.top();
+            return calc.stack.top();
         }
     },
-    clear: function() {
-        if (calculator_global.stack.empty())
+    clear: function(calc) {
+        if (calc.stack.empty())
             return;
-        calculator_global.stack.popCancel();
-        calculator_global.renderRegister();
+        calc.stack.popCancel();
+        calc.renderRegister();
     },
 });
 
 const registerModeResult = (v) => ({
     value: v,
-    render: function() {
-        if (calculator_global.stack.empty()) {
+    render: function(calc) {
+        if (calc.stack.empty()) {
             return `= ${formatNumber(v, 12)}`;
         } else {
             return `..) = ${formatNumber(v, 9)}`
         }
     },
-    clear: function() {
-        calculator_global.setRegModeEmpty();
+    clear: function(calc) {
+        calc.setRegModeEmpty();
     }
 });
 
 const registerModeInput = (s) => ({
     value: +s,
     text: "" + s,
-    render: function() {
+    render: function(calc) {
         if (this.text.length == 0)
             return '0';
         else
             return this.text
     },
-    clear: function() {
+    clear: function(calc) {
         const l = this.text.length;
         if (l <= 1) {
-            calculator_global.setRegModeEmpty();
+            calc.setRegModeEmpty();
         } else {
-            calculator_global.setRegModeInput(this.text.substring(0, l - 1));
+            calc.setRegModeInput(this.text.substring(0, l - 1));
         }
     },
-    pokeInput: function(input) {
+    pokeInput: function(calc, input) {
         if (!isNaN(+(this.text + input)))
-            calculator_global.setRegModeInput(this.text + input);
+            calc.setRegModeInput(this.text + input);
     },
 })
 
@@ -208,7 +208,7 @@ var calculator_global = ({
      * Update the screen
      */
     renderRegister: function() {
-        this._screen.innerText = this.registerMode.render();
+        this._screen.innerText = this.registerMode.render(this);
     },
     /**
      * Set the empty register mode, nothing entered.
@@ -243,7 +243,7 @@ var calculator_global = ({
 calculator_global.renderRegister();
 
 function setInput(v) {
-    calculator_global.setRegModeInput(v);
+    calculator_global.setRegModeInput(calculator_global, v);
 }
 
 /* * *
@@ -268,7 +268,7 @@ document.querySelector('.calculator [data-key="EXEC"]')
 document.querySelector('.calculator [data-key="CLR"]')
     .addEventListener('click', (ev) =>
 {
-    calculator_global.registerMode.clear();
+    calculator_global.registerMode.clear(calculator_global);
 });
 
 /**
@@ -301,7 +301,7 @@ wireOperationKey('DIV', calculator_global.stack.defBinOp('/', 2, (a) => (b) => a
 function pushInputKey(label) {
     if (!("pokeInput" in calculator_global.registerMode))
         calculator_global.setRegModeInput('');
-    calculator_global.registerMode.pokeInput(label);
+    calculator_global.registerMode.pokeInput(calculator_global, label);
 }
 
 document.querySelectorAll('.calculator button')
