@@ -238,6 +238,20 @@ var calculator_global = ({
         this.registerMode = registerModeInput(s);
         this.renderRegister();
     },
+    /**
+     * True when there is a value in the register, meaning binary operations should be used.
+     */
+    hasValue: function() {
+        return "value" in this.registerMode;
+    },
+    /**
+     * Poke a character of input into the calculator.
+     */
+    pokeInput: function(ch) {
+        if (!("pokeInput" in this.registerMode))
+            this.setRegModeInput('');
+        this.registerMode.pokeInput(this, ch);
+    },
 });
 
 calculator_global.renderRegister();
@@ -256,7 +270,7 @@ function setInput(v) {
 document.querySelector('.calculator [data-key="EXEC"]')
     .addEventListener('click', (ev) =>
 {
-    if ("value" in calculator_global.registerMode) {
+    if (calculator_global.hasValue()) {
         const result = calculator_global.stack.popExec(calculator_global.registerMode.value);
         calculator_global.setRegModeResult(result);
     }
@@ -281,7 +295,7 @@ function wireOperationKey(dataKey, binOp, unaOp) {
     document.querySelector(`.calculator [data-key="${dataKey}"]`)
         .addEventListener('click', (ev) => 
     {
-        if ("value" in calculator_global.registerMode) {
+        if (calculator_global.hasValue()) {
             binOp(calculator_global.registerMode.value);
             calculator_global.setRegModeEmpty();
         } else if (unaOp != null) {
@@ -299,9 +313,7 @@ wireOperationKey('DIV', calculator_global.stack.defBinOp('/', 2, (a) => (b) => a
                         calculator_global.stack.defUnaOp('(', (a) => a));
 
 function pushInputKey(label) {
-    if (!("pokeInput" in calculator_global.registerMode))
-        calculator_global.setRegModeInput('');
-    calculator_global.registerMode.pokeInput(calculator_global, label);
+    calculator_global.pokeInput(label);
 }
 
 document.querySelectorAll('.calculator button')
