@@ -42,7 +42,16 @@ value back out of a binary operation, but that will require a bit more bookkeepi
 - [X]   implement unary operations
         (parentheses and square root only)
 
-later:
+## Refactor
+
+- [ ]   Put all state in a single global object, both the register state and the
+        stack
+- [ ]   Move register functions that access that state into methods
+- [ ]   Write a function to wire all keys within a .calculator div to a
+        calculator-register object.
+- [ ]   Add a second calculator to the page, just to see if it works.
+
+## Later:
 
 - [ ]   handle prefix `-` key
 
