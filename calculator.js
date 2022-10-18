@@ -159,7 +159,7 @@ const registerModeEmpty = () => ({
         if (calculator_global.stack.empty())
             return;
         calculator_global.stack.popCancel();
-        renderRegister();
+        calculator_global.renderRegister();
     },
 });
 
@@ -172,7 +172,9 @@ const registerModeResult = (v) => ({
             return `..) = ${formatNumber(v, 9)}`
         }
     },
-    clear: setRegModeEmpty,
+    clear: function() {
+        calculator_global.setRegModeEmpty();
+    }
 });
 
 const registerModeInput = (s) => ({
@@ -187,47 +189,61 @@ const registerModeInput = (s) => ({
     clear: function() {
         const l = this.text.length;
         if (l <= 1) {
-            setRegModeEmpty();
+            calculator_global.setRegModeEmpty();
         } else {
-            setRegModeInput(this.text.substring(0, l - 1));
+            calculator_global.setRegModeInput(this.text.substring(0, l - 1));
         }
     },
     pokeInput: function(input) {
         if (!isNaN(+(this.text + input)))
-            setRegModeInput(this.text + input);
+            calculator_global.setRegModeInput(this.text + input);
     },
 })
 
 var calculator_global = ({
     stack: calcStack(),
     registerMode: registerModeEmpty(),
+    _screen: document.querySelector('.calculator .screen'),
+    /**
+     * Update the screen
+     */
+    renderRegister: function() {
+        this._screen.innerText = this.registerMode.render();
+    },
+    /**
+     * Set the empty register mode, nothing entered.
+     *
+     * In this mode the calculator displays the top operation or "ready"
+     */
+    setRegModeEmpty: function() {
+        this.registerMode = registerModeEmpty();
+        this.renderRegister();
+    },
+    /**
+     * Set the result register mode, after the execute key has been pushed.
+     *
+     * @param v the result value that has been returned and which should be
+     *          displayed
+     */
+    setRegModeResult: function(v) {
+        this.registerMode = registerModeResult(v);
+        this.renderRegister();
+    },
+    /**
+     * Set the input register mode, in which input is stored as a string.
+     *
+     * @param s the input string so far.
+     */
+    setRegModeInput: function(s) {
+        this.registerMode = registerModeInput(s);
+        this.renderRegister();
+    },
 });
 
-function renderRegister() {
-    const screen = document.querySelector('.calculator .screen');
-    screen.innerText = calculator_global.registerMode.render();
-}
-
-renderRegister();
-
-function setRegModeEmpty() {
-    calculator_global.registerMode = registerModeEmpty();
-    renderRegister();
-}
-
-function setRegModeResult(v) {
-    calculator_global.registerMode = registerModeResult(v);
-    renderRegister();
-}
-
-function setRegModeInput(s) {
-    calculator_global.registerMode = registerModeInput(s)
-    renderRegister();
-}
+calculator_global.renderRegister();
 
 function setInput(v) {
-    calculator_global.registerMode = registerModeInput(v);
-    renderRegister();
+    calculator_global.setRegModeInput(v);
 }
 
 /* * *
@@ -242,7 +258,7 @@ document.querySelector('.calculator [data-key="EXEC"]')
 {
     if ("value" in calculator_global.registerMode) {
         const result = calculator_global.stack.popExec(calculator_global.registerMode.value);
-        setRegModeResult(result);
+        calculator_global.setRegModeResult(result);
     }
 });
 
@@ -267,10 +283,10 @@ function wireOperationKey(dataKey, binOp, unaOp) {
     {
         if ("value" in calculator_global.registerMode) {
             binOp(calculator_global.registerMode.value);
-            setRegModeEmpty();
+            calculator_global.setRegModeEmpty();
         } else if (unaOp != null) {
             unaOp();
-            setRegModeEmpty();
+            calculator_global.setRegModeEmpty();
         }
     });
 }
@@ -284,7 +300,7 @@ wireOperationKey('DIV', calculator_global.stack.defBinOp('/', 2, (a) => (b) => a
 
 function pushInputKey(label) {
     if (!("pokeInput" in calculator_global.registerMode))
-        setRegModeInput('');
+        calculator_global.setRegModeInput('');
     calculator_global.registerMode.pokeInput(label);
 }
 
