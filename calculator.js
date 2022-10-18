@@ -200,7 +200,7 @@ const registerModeInput = (s) => ({
     },
 })
 
-var calculator_global = ({
+const calculator = () => ({
     stack: calcStack(),
     registerMode: registerModeEmpty(),
     _screen: document.querySelector('.calculator .screen'),
@@ -270,72 +270,56 @@ var calculator_global = ({
     },
 });
 
-calculator_global.renderRegister();
+var calculator_global;
 
 function setInput(v) {
     calculator_global.setRegModeInput(calculator_global, v);
 }
 
-/* * *
- * Key events
- * * */
-
 /**
- * execute key
+ * Wire everything to the one calculator.
  */
-document.querySelector('.calculator [data-key="EXEC"]')
-    .addEventListener('click', (ev) =>
-{
-    if (calculator_global.hasValue()) {
-        const result = calculator_global.stack.popExec(calculator_global.registerMode.value);
-        calculator_global.setRegModeResult(result);
-    }
-});
 
-/**
- * clear key
- */
-document.querySelector('.calculator [data-key="CLR"]')
-    .addEventListener('click', (ev) =>
-{
-    calculator_global.registerMode.clear(calculator_global);
-});
+function wireCalculator(calcDiv) {
+    const calc = calculator();
+    calculator_global = calc;
+    // Ops to be executed when there is no value in the register
+    const opsNoValue = {
+        CLR: () => calc.registerMode.clear(calc),
+        MUL: calc.defUnaOp('sqrt(', (a) => Math.sqrt(a)),
+        DIV: calc.defUnaOp('(', (a) => a),
+    };
+    // Ops to be executed when there is a value in the register
+    const opsWithValue = {
+        EXEC: function() {
+            const result = calc.stack.popExec(calc.registerMode.value);
+            calc.setRegModeResult(result);
+        },
+        CLR: () => calc.registerMode.clear(calc),
+        ADD: calc.defBinOp('+', 1, (a) => (b) => a + b),
+        SUB: calc.defBinOp('-', 1, (a) => (b) => a - b),
+        MUL: calc.defBinOp('*', 2, (a) => (b) => a * b),
+        DIV: calc.defBinOp('/', 2, (a) => (b) => a / b),
+    };
 
-/**
- * Register click listener to implement an operation key
- * @param dataKey   data-key attribute in the DOM
- * @param binOp     pushFoo function defined using `defBinOp`
- * @param unaOp     pushBar function defined using `defUnaOp` (or null)
- */
-function wireOperationKey(dataKey, binOp, unaOp) {
-    document.querySelector(`.calculator [data-key="${dataKey}"]`)
-        .addEventListener('click', (ev) => 
-    {
-        if (calculator_global.hasValue()) {
-            binOp();
-        } else if (unaOp != null) {
-            unaOp();
+    calcDiv.querySelectorAll('button').forEach((button) => {
+        if ('data-key' in button.attributes) {
+            const dataKey = button.attributes['data-key'].value;
+            let listener;
+            if (dataKey.length == 1) {
+                listener = (ev) => calc.pokeInput(dataKey);
+            } else {
+                listener = (ev) => {
+                    if (calc.hasValue() && dataKey in opsWithValue)
+                        opsWithValue[dataKey]();
+                    else if (dataKey in opsNoValue)
+                        opsNoValue[dataKey]();
+                };
+            }
+            button.addEventListener('click', listener);
         }
     });
+
+    calc.renderRegister();
 }
-
-wireOperationKey('ADD', calculator_global.defBinOp('+', 1, (a) => (b) => a + b), null);
-wireOperationKey('SUB', calculator_global.defBinOp('-', 1, (a) => (b) => a - b), null);
-wireOperationKey('MUL', calculator_global.defBinOp('*', 2, (a) => (b) => a * b),
-                        calculator_global.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
-wireOperationKey('DIV', calculator_global.defBinOp('/', 2, (a) => (b) => a / b),
-                        calculator_global.defUnaOp('(', (a) => a));
-
-function pushInputKey(label) {
-    calculator_global.pokeInput(label);
-}
-
-document.querySelectorAll('.calculator button')
-    .forEach((button) =>
-{
-    if (('data-key' in button.attributes)) {
-        const dataKey = button.attributes['data-key'].value;
-        if (dataKey.length == 1)
-            button.addEventListener('click', (ev) => pushInputKey(dataKey));
-    }
-});
+document.querySelectorAll('.calculator').forEach((calcDiv) => wireCalculator(calcDiv));
