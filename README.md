@@ -5,6 +5,8 @@ Odin Project requirements because this is a bit harder. As an extra feature, it
 overloads the keypad to handle parentheses and square roots without needing more
 buttons. Snazzy!
 
+[page here](/calculator.html)
+
 ## The basic idea
 
 Evaluate an operation as soon as all its arguments are available. Keep a stack
