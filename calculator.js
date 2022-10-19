@@ -252,6 +252,22 @@ var calculator_global = ({
             this.setRegModeInput('');
         this.registerMode.pokeInput(this, ch);
     },
+    defUnaOp: function(symbol, unaOp) {
+        const calc = this;
+        const stackOp = this.stack.defUnaOp(symbol, unaOp);
+        return function() {
+            stackOp();
+            calc.setRegModeEmpty();
+        }
+    },
+    defBinOp: function(symbol, prec, binOp) {
+        const calc = this;
+        const stackOp = this.stack.defBinOp(symbol, prec, binOp);
+        return function() {
+            stackOp(calc.registerMode.value);
+            calc.setRegModeEmpty();
+        }
+    },
 });
 
 calculator_global.renderRegister();
@@ -296,21 +312,19 @@ function wireOperationKey(dataKey, binOp, unaOp) {
         .addEventListener('click', (ev) => 
     {
         if (calculator_global.hasValue()) {
-            binOp(calculator_global.registerMode.value);
-            calculator_global.setRegModeEmpty();
+            binOp();
         } else if (unaOp != null) {
             unaOp();
-            calculator_global.setRegModeEmpty();
         }
     });
 }
 
-wireOperationKey('ADD', calculator_global.stack.defBinOp('+', 1, (a) => (b) => a + b), null);
-wireOperationKey('SUB', calculator_global.stack.defBinOp('-', 1, (a) => (b) => a - b), null);
-wireOperationKey('MUL', calculator_global.stack.defBinOp('*', 2, (a) => (b) => a * b),
-                        calculator_global.stack.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
-wireOperationKey('DIV', calculator_global.stack.defBinOp('/', 2, (a) => (b) => a / b),
-                        calculator_global.stack.defUnaOp('(', (a) => a));
+wireOperationKey('ADD', calculator_global.defBinOp('+', 1, (a) => (b) => a + b), null);
+wireOperationKey('SUB', calculator_global.defBinOp('-', 1, (a) => (b) => a - b), null);
+wireOperationKey('MUL', calculator_global.defBinOp('*', 2, (a) => (b) => a * b),
+                        calculator_global.defUnaOp('sqrt(', (a) => Math.sqrt(a)));
+wireOperationKey('DIV', calculator_global.defBinOp('/', 2, (a) => (b) => a / b),
+                        calculator_global.defUnaOp('(', (a) => a));
 
 function pushInputKey(label) {
     calculator_global.pokeInput(label);
