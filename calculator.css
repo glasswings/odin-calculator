@@ -45,3 +45,19 @@ button {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
 }
+
+.calculator span.una {
+    display: inline;
+}
+
+.calculator span.bin {
+    display: none;
+}
+
+.calculator span.eq {
+    display: inline;
+}
+
+.calculator span.par {
+    display: none;
+}
