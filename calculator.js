@@ -200,10 +200,10 @@ const registerModeInput = (s) => ({
     },
 })
 
-const calculator = () => ({
+const calculator = (calcDiv) => ({
     stack: calcStack(),
     registerMode: registerModeEmpty(),
-    _screen: document.querySelector('.calculator .screen'),
+    _screen: calcDiv.querySelector('.screen'),
     /**
      * Update the screen
      */
@@ -281,7 +281,7 @@ function setInput(v) {
  */
 
 function wireCalculator(calcDiv) {
-    const calc = calculator();
+    const calc = calculator(calcDiv);
     calculator_global = calc;
     // Ops to be executed when there is no value in the register
     const opsNoValue = {
