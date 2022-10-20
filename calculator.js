@@ -411,3 +411,13 @@ function wireCalculator(calcDiv) {
     calc.renderRegister();
 }
 document.querySelectorAll('.calculator').forEach((calcDiv) => wireCalculator(calcDiv));
+
+/**
+ * Display the div0 error box
+ */
+function showDiv0Error() {
+    const modal = document.querySelector('dialog.div0');
+    const resetButton = modal.querySelector('button.reset');
+    resetButton.addEventListener('click', (ev) => modal.close());
+    modal.showModal();
+}
