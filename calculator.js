@@ -221,6 +221,7 @@ const calculator = (calcDiv) => ({
      */
     setRegModeEmpty: function() {
         this.registerMode = registerModeEmpty();
+        this.setButtons();
         this.renderRegister();
     },
     /**
@@ -231,6 +232,7 @@ const calculator = (calcDiv) => ({
      */
     setRegModeResult: function(v) {
         this.registerMode = registerModeResult(v);
+        this.setButtons();
         this.renderRegister();
     },
     /**
@@ -240,6 +242,7 @@ const calculator = (calcDiv) => ({
      */
     setRegModeInput: function(s) {
         this.registerMode = registerModeInput(s);
+        this.setButtons();
         this.renderRegister();
     },
     /**
