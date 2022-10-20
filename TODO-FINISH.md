@@ -9,8 +9,8 @@
 -  [ ]  Remove the `|>` button. I'm not sure how I want to define it.
 -  [ ]  But do special-case square-root in result mode.
 
--  [ ]  Squash underflows to zero
--  [ ]  Set maximum width of numbers
+-  [X]  Squash underflows to zero
+-  [X]  Set maximum width of numbers
 
 -  [ ]  Handle leading zeros in input mode
 

@@ -16,7 +16,11 @@
 function formatNumber(n, nDigits) {
     const absN = Math.abs(n);
     const bigThreshold = 10 ** nDigits;
-    if (1 / bigThreshold < absN && absN < bigThreshold) {
+    const epsilon = 10 ** -20;
+    if (absN < epsilon) {
+        // underflow to 0
+        return "0"
+    } else if (1 / bigThreshold < absN && absN < bigThreshold) {
         // fixed notation
         const formatted = n.toFixed(nDigits).substring(0, nDigits + 2);
         let l = formatted.length;
@@ -36,7 +40,7 @@ function formatNumber(n, nDigits) {
         return formatted.substring(0, l);
     } else {
         // exponential notation
-        return formatted = n.toExponential(nDigits);
+        return formatted = n.toExponential(nDigits - 4);
     }
 }
 
