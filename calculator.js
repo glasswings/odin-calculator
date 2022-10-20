@@ -200,9 +200,9 @@ const registerModeResult = (v) => ({
     value: v,
     render: function(calc) {
         if (calc.stack.empty()) {
-            return `= ${formatNumber(v, 12)}`;
+            return `=${formatNumber(v, 11)}`;
         } else {
-            return `..) = ${formatNumber(v, 9)}`
+            return `)=${formatNumber(v, 11)}`
         }
     },
     clear: function(calc) {
