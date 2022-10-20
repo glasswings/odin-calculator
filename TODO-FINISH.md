@@ -1,6 +1,6 @@
 # Things to do to finish the calculator project
 
--  [ ]  Allow input of negative numbers using `-`. This will require a
+-  [X]  Allow input of negative numbers using `-`. This will require a
    leading-minus mode and handling unary operators so the user can type `-(`
    and `-sqrt(`
 
@@ -11,3 +11,7 @@
 
 -  [ ]  Squash underflows to zero
 -  [ ]  Set maximum width of numbers
+
+-  [ ]  Handle leading zeros in input mode
+
+-  [ ]  Add cheeky modal for division by zero
