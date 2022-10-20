@@ -131,7 +131,9 @@ const calcStack = () => ({
      * Cancel the topmost operation, if it exists.
      */
     popCancel: function() {
-        this._stack.pop();
+        const popped = this._stack.pop();
+        if (popped && popped.prec == 0)
+            this._parenCount--;
     },
     /**
      * Execute operations. Implements `)` or `=`
@@ -159,6 +161,7 @@ const registerModeEmpty = () => ({
         if (calc.stack.empty())
             return;
         calc.stack.popCancel();
+        calc.setButtons();
         calc.renderRegister();
     },
 });
