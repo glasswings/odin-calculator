@@ -14,4 +14,4 @@
 
 -  [X]  handle leading zeros in input mode
 
--  [ ]  Add cheeky modal for division by zero
+-  [X]  Add cheeky modal for division by zero

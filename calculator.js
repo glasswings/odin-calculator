@@ -47,6 +47,7 @@ function formatNumber(n, nDigits) {
 const calcStack = () => ({
     _stack: [],
     _parenCount: 0,
+    error: false,
     /**
      * True if the stack has a unary operation waiting
      */
@@ -94,6 +95,10 @@ const calcStack = () => ({
                 this._stack.push(oldOp);
                 break;
             }
+        }
+        if (!isFinite(n)) {
+            this.error = true;
+            return 0;
         }
         return n;
     },
@@ -257,6 +262,11 @@ const calculator = (calcDiv) => ({
      * Update the screen
      */
     renderRegister: function() {
+        if (this.stack.error) {
+            this.reset();
+            showDiv0Error();
+            return;
+        }
         this._screen.innerText = this.registerMode.render(this);
     },
     /**
@@ -350,6 +360,17 @@ const calculator = (calcDiv) => ({
             stackOp(calc.registerMode.value);
             calc.setRegModeEmpty();
         }
+    },
+    /**
+     * Reset the calculation completely
+     *
+     * Currently only used for div0, but an all-clear button could be implemented using this.
+     */
+    reset: function() {
+        this.stack.error = false;
+        while (!this.stack.empty())
+            this.stack.popCancel();
+        this.setRegModeEmpty();
     },
 });
 
