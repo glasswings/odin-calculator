@@ -194,7 +194,9 @@ const registerModeInput = (s) => ({
     },
     clear: function(calc) {
         const l = this.text.length;
-        if (l <= 1) {
+        if (l <= 2 && this.text[0] == '-') {
+            calc.setRegModeMinus();
+        } else if (l <= 1) {
             calc.setRegModeEmpty();
         } else {
             calc.setRegModeInput(this.text.substring(0, l - 1));
