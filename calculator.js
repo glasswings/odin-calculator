@@ -40,8 +40,6 @@ function formatNumber(n, nDigits) {
     }
 }
 
-/* BRANCH shuntyard-v2 BEGIN */
-
 const calcStack = () => ({
     _stack: [],
     /**
@@ -135,13 +133,6 @@ const calcStack = () => ({
         return this._popOps(-1, arg);
     },
 });
-
-/* BRANCH shuntyard-v2 END */
-
-function debugStack() {
-    console.log(calculator_global.stack.debugStack());
-    renderRegister();
-}
 
 /* * *
  * Register display
@@ -269,12 +260,6 @@ const calculator = (calcDiv) => ({
         }
     },
 });
-
-var calculator_global;
-
-function setInput(v) {
-    calculator_global.setRegModeInput(calculator_global, v);
-}
 
 /**
  * Wire everything to the one calculator.
