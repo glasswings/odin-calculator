@@ -12,6 +12,6 @@
 -  [X]  Squash underflows to zero
 -  [X]  Set maximum width of numbers
 
--  [ ]  Handle leading zeros in input mode
+-  [X]  handle leading zeros in input mode
 
 -  [ ]  Add cheeky modal for division by zero

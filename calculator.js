@@ -238,6 +238,13 @@ const registerModeInput = (s) => ({
             return;
         if (this.text.length >= 12)
             return;
+        if (input === "0") {
+            switch (this.text) {
+            case "0":
+            case "-0":
+                return;
+            }
+        }
         calc.setRegModeInput(this.text + input);
     },
 });
