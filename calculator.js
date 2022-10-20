@@ -295,7 +295,6 @@ function wireCalculator(calcDiv) {
             const result = calc.stack.popExec(calc.registerMode.value);
             calc.setRegModeResult(result);
         },
-        CLR: () => calc.registerMode.clear(calc),
         ADD: calc.defBinOp('+', 1, (a) => (b) => a + b),
         SUB: calc.defBinOp('-', 1, (a) => (b) => a - b),
         MUL: calc.defBinOp('*', 2, (a) => (b) => a * b),
@@ -309,11 +308,13 @@ function wireCalculator(calcDiv) {
             if (dataKey.length == 1) {
                 listener = (ev) => calc.pokeInput(dataKey);
             } else {
+                const opWithValue = opsWithValue[dataKey];
+                const opWithoutValue = opsNoValue[dataKey];
                 listener = (ev) => {
-                    if (calc.hasValue() && dataKey in opsWithValue)
-                        opsWithValue[dataKey]();
-                    else if (dataKey in opsNoValue)
-                        opsNoValue[dataKey]();
+                    if (calc.hasValue() && opWithValue)
+                        opWithValue();
+                    else if (opWithoutValue)
+                        opWithoutValue();
                 };
             }
             button.addEventListener('click', listener);
