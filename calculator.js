@@ -9,7 +9,7 @@
 
 /**
  * Format a number to a string, limiting the number of digits to the right of
- * the first.
+ * the first
  *
  * @param n the number
  */
@@ -49,7 +49,7 @@ const calcStack = () => ({
         return !(0 in this._stack);
     },
     /**
-     * Display string of the top operation, or null if there is none.
+     * Display string of the top operation, or null if there is none
      */
     top: function() {
         if (this.empty()) {
@@ -89,7 +89,7 @@ const calcStack = () => ({
      * Define a function that pushes a unary operation
      *
      * @returns         a function that takes no arguments
-     *                  and pushes the operation to the stack.
+     *                  and pushes the operation to the stack
      * @param display   string to display representing the operation
      * @param unaOp        (a) => ...
      */
@@ -103,7 +103,7 @@ const calcStack = () => ({
      * Define a function that pushes a binary operation
      *
      * @returns         a function that takes the number before the operator
-     *                  and pushes the operation to the stack.
+     *                  and pushes the operation to the stack
      * @param display   string to display representing the operation
      * @param prec      precedence code:
      *                  1 - addition/subtraction
@@ -119,7 +119,7 @@ const calcStack = () => ({
         }
     },
     /**
-     * Cancel the topmost operation, if it exists.
+     * Cancel the topmost operation, if it exists
      */
     popCancel: function() {
         this._stack.pop();
@@ -189,7 +189,7 @@ const registerModeInput = (s) => ({
         if (!isNaN(+(this.text + input)))
             calc.setRegModeInput(this.text + input);
     },
-})
+});
 
 const calculator = (calcDiv) => ({
     stack: calcStack(),
@@ -202,7 +202,7 @@ const calculator = (calcDiv) => ({
         this._screen.innerText = this.registerMode.render(this);
     },
     /**
-     * Set operation button to display the correct legend.
+     * Set operation button to display the correct legend
      */
     setButtons: function() {
         const visible = (p) => p ? 'inline' : 'none';
@@ -215,7 +215,7 @@ const calculator = (calcDiv) => ({
         });
     },
     /**
-     * Set the empty register mode, nothing entered.
+     * Set the empty register mode, nothing entered
      *
      * In this mode the calculator displays the top operation or "ready"
      */
@@ -225,7 +225,7 @@ const calculator = (calcDiv) => ({
         this.renderRegister();
     },
     /**
-     * Set the result register mode, after the execute key has been pushed.
+     * Set the result register mode, after the execute key has been pushed
      *
      * @param v the result value that has been returned and which should be
      *          displayed
@@ -236,9 +236,9 @@ const calculator = (calcDiv) => ({
         this.renderRegister();
     },
     /**
-     * Set the input register mode, in which input is stored as a string.
+     * Set the input register mode, in which input is stored as a string
      *
-     * @param s the input string so far.
+     * @param s the input string so far
      */
     setRegModeInput: function(s) {
         this.registerMode = registerModeInput(s);
@@ -246,13 +246,13 @@ const calculator = (calcDiv) => ({
         this.renderRegister();
     },
     /**
-     * True when there is a value in the register, meaning binary operations should be used.
+     * True when there is a value in the register, meaning binary operations should be used
      */
     hasValue: function() {
         return "value" in this.registerMode;
     },
     /**
-     * Poke a character of input into the calculator.
+     * Poke a character of input into the calculator
      */
     pokeInput: function(ch) {
         if (!("pokeInput" in this.registerMode))
@@ -278,7 +278,7 @@ const calculator = (calcDiv) => ({
 });
 
 /**
- * Wire everything to the one calculator.
+ * Wire everything to the one calculator
  */
 
 function wireCalculator(calcDiv) {
