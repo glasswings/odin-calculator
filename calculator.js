@@ -42,6 +42,13 @@ function formatNumber(n, nDigits) {
 
 const calcStack = () => ({
     _stack: [],
+    _parenCount: 0,
+    /**
+     * True if the stack has a unary operation waiting
+     */
+    hasParen: function() {
+        return this._parenCount != 0;
+    },
     /**
      * True if the stack is empty
      */
@@ -74,6 +81,7 @@ const calcStack = () => ({
             const oldOp = this._stack.pop();
             if (prec == -1 && oldOp.prec == 0) {
                 n = oldOp.op(n);
+                this._parenCount--;
                 break;
             } else if (oldOp.prec >= prec) {
                 n = oldOp.op(n);
@@ -96,6 +104,7 @@ const calcStack = () => ({
     defUnaOp: function(symbol, unaOp) {
         const calc = this;
         return function() {
+            calc._parenCount++;
             calc._stack.push({display: symbol, prec: 0, op: unaOp});
         }
     },
@@ -207,11 +216,16 @@ const calculator = (calcDiv) => ({
     setButtons: function() {
         const visible = (p) => p ? 'inline' : 'none';
         const binary = this.hasValue();
+        const paren = this.stack.hasParen();
         calcDiv.querySelectorAll('button span').forEach( (span) => {
             if (span.classList.contains('una'))
                 span.style.display = visible(!binary);
             else if (span.classList.contains('bin'))
                 span.style.display = visible(binary);
+            else if (span.classList.contains('eq'))
+                span.style.display = visible(!paren);
+            else if (span.classList.contains('par'))
+                span.style.display = visible(paren);
         });
     },
     /**
