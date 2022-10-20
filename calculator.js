@@ -202,6 +202,19 @@ const calculator = (calcDiv) => ({
         this._screen.innerText = this.registerMode.render(this);
     },
     /**
+     * Set operation button to display the correct legend.
+     */
+    setButtons: function() {
+        const visible = (p) => p ? 'inline' : 'none';
+        const binary = this.hasValue();
+        calcDiv.querySelectorAll('button span').forEach( (span) => {
+            if (span.classList.contains('una'))
+                span.style.display = visible(!binary);
+            else if (span.classList.contains('bin'))
+                span.style.display = visible(binary);
+        });
+    },
+    /**
      * Set the empty register mode, nothing entered.
      *
      * In this mode the calculator displays the top operation or "ready"
