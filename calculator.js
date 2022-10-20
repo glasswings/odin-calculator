@@ -154,6 +154,21 @@ const registerModeEmpty = () => ({
     },
 });
 
+const registerModeMinus = () => ({
+    render: function(calc) {
+        return "-";
+    },
+    clear: function(calc) {
+        calc.setRegModeEmpty();
+    },
+    pokeInput: function(calc, input) {
+        calc.setRegModeInput("-" + input);
+    },
+    pokeMinus: function(calc) {
+        calc.setRegModeEmpty();
+    }
+});
+
 const registerModeResult = (v) => ({
     value: v,
     render: function(calc) {
@@ -246,6 +261,15 @@ const calculator = (calcDiv) => ({
         this.renderRegister();
     },
     /**
+     * Set the minus register mode, when "-" has been entered but there's no
+     * numbers yet.
+     */
+    setRegModeMinus: function() {
+        this.registerMode = registerModeMinus();
+        this.setButtons();
+        this.renderRegister();
+    },
+    /**
      * True when there is a value in the register, meaning binary operations should be used.
      */
     hasValue: function() {
@@ -278,9 +302,18 @@ const calculator = (calcDiv) => ({
 });
 
 /**
+ * Push the minus button when it's not a binary operation
+ */
+function pokeMinus(calc) {
+    if ('pokeMinus' in calc.registerMode)
+        calc.registerMode.pokeMinus(calc);
+    else
+        calc.setRegModeMinus();
+}
+
+/**
  * Wire everything to the one calculator.
  */
-
 function wireCalculator(calcDiv) {
     const calc = calculator(calcDiv);
     calculator_global = calc;
@@ -289,6 +322,7 @@ function wireCalculator(calcDiv) {
         CLR: () => calc.registerMode.clear(calc),
         MUL: calc.defUnaOp('sqrt(', (a) => Math.sqrt(a)),
         DIV: calc.defUnaOp('(', (a) => a),
+        SUB: () => pokeMinus(calc),
     };
     // Ops to be executed when there is a value in the register
     const opsWithValue = {
