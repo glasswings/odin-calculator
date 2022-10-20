@@ -100,6 +100,20 @@ const calcStack = () => ({
         }
     },
     /**
+     * Define the minus variant of a unary operation
+     *
+     * @returns         a function that takes no arguments
+     *                  and pushes the operation to the stack.
+     * @param display   string to display representing the operation
+     * @param unaOp        (a) => ...
+     */
+    defUnaMinusOp: function(symbol, unaOp) {
+        const calc = this;
+        return function() {
+            calc._stack.push({display: "-" + symbol, prec: 0, op: (a) => -unaOp(a) });
+        }
+    },
+    /**
      * Define a function that pushes a binary operation
      *
      * @returns         a function that takes the number before the operator
@@ -155,6 +169,7 @@ const registerModeEmpty = () => ({
 });
 
 const registerModeMinus = () => ({
+    isMinus: true,
     render: function(calc) {
         return "-";
     },
@@ -288,8 +303,12 @@ const calculator = (calcDiv) => ({
     defUnaOp: function(symbol, unaOp) {
         const calc = this;
         const stackOp = this.stack.defUnaOp(symbol, unaOp);
+        const stackMinusOp = this.stack.defUnaMinusOp(symbol, unaOp);
         return function() {
-            stackOp();
+            if (calc.registerMode.isMinus)
+                stackMinusOp();
+            else
+                stackOp();
             calc.setRegModeEmpty();
         }
     },
