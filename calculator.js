@@ -230,8 +230,11 @@ const registerModeInput = (s) => ({
         }
     },
     pokeInput: function(calc, input) {
-        if (!isNaN(+(this.text + input)))
-            calc.setRegModeInput(this.text + input);
+        if (isNaN(+(this.text + input)))
+            return;
+        if (this.text.length >= 12)
+            return;
+        calc.setRegModeInput(this.text + input);
     },
 });
 
