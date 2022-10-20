@@ -9,7 +9,7 @@
 
 /**
  * Format a number to a string, limiting the number of digits to the right of
- * the first.
+ * the first
  *
  * @param n the number
  */
@@ -89,7 +89,7 @@ const calcStack = () => ({
      * Define a function that pushes a unary operation
      *
      * @returns         a function that takes no arguments
-     *                  and pushes the operation to the stack.
+     *                  and pushes the operation to the stack
      * @param display   string to display representing the operation
      * @param unaOp        (a) => ...
      */
@@ -103,7 +103,7 @@ const calcStack = () => ({
      * Define the minus variant of a unary operation
      *
      * @returns         a function that takes no arguments
-     *                  and pushes the operation to the stack.
+     *                  and pushes the operation to the stack
      * @param display   string to display representing the operation
      * @param unaOp        (a) => ...
      */
@@ -279,7 +279,7 @@ const calculator = (calcDiv) => ({
     },
     /**
      * Set the minus register mode, when "-" has been entered but there's no
-     * numbers yet.
+     * numbers yet
      */
     setRegModeMinus: function() {
         this.registerMode = registerModeMinus();
@@ -287,7 +287,7 @@ const calculator = (calcDiv) => ({
         this.renderRegister();
     },
     /**
-     * True when there is a value in the register, meaning binary operations should be used.
+     * True when there is a value in the register, meaning binary operations should be used
      */
     hasValue: function() {
         return "value" in this.registerMode;
@@ -333,7 +333,7 @@ function pokeMinus(calc) {
 }
 
 /**
- * Wire everything to the one calculator.
+ * Wire everything to the one calculator
  */
 function wireCalculator(calcDiv) {
     const calc = calculator(calcDiv);
