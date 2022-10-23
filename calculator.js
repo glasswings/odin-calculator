@@ -72,7 +72,7 @@ const calcStack = () => ({
         }
     },
     debugStack: function() {
-        return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;;
+        return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;
     },
     /**
      * Pop operations off the stack
@@ -211,7 +211,7 @@ const registerModeResult = (v) => ({
         if (calc.stack.empty()) {
             return `=${formatNumber(v, 11)}`;
         } else {
-            return `)=${formatNumber(v, 11)}`
+            return `)=${formatNumber(v, 11)}`;
         }
     },
     clear: function(calc) {
@@ -226,7 +226,7 @@ const registerModeInput = (s) => ({
         if (this.text.length == 0)
             return '0';
         else
-            return this.text
+            return this.text;
     },
     clear: function(calc) {
         const l = this.text.length;
@@ -389,7 +389,6 @@ function pokeMinus(calc) {
  */
 function wireCalculator(calcDiv) {
     const calc = calculator(calcDiv);
-    calculator_global = calc;
     // Ops to be executed when there is no value in the register
     const opsNoValue = {
         CLR: () => calc.registerMode.clear(calc),
