@@ -1,7 +1,9 @@
-/*  Part of Glasswings' Shuntyard Calculator, Copyright 2022 by Glasswings
-    You can redistribute, host, and/or modify it under the GNU Affero General Public License
-    which should be hosted alongside it and its source code, but you can also get a copy
-    of the license or later versions from https://www.gnu.org/licenses/ */
+/*
+ * Copyright 2022 by Glasswings
+ * SPDX-FileCopyrightText: 2022 Glasswings
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
 
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 
@@ -9,6 +11,11 @@
     background-color: #443c4c;
     color: #d8daf0;
     font-family: Orbitron;
+}
+
+* {
+    margin: 0;
+    padding: 0;
 }
 
 .calculator button {
@@ -89,4 +96,20 @@
 }
 .div0 button:hover {
     background-color: #d8a7e6;
+}
+
+footer {
+    background-color: #e4d8f0;
+    color: black;
+    left: 0;
+    right: 0;
+    font-size: 1.3rem;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 0.3rem;
+}
+
+footer a {
+    color: maroon;
 }

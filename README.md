@@ -1,68 +1,98 @@
+<!--
+SPDX-FileCopyrightText: 2022 Glasswings
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Shuntyard Calculator
 
-This implements a classic computer science algorithm--and cheekily ignores the
-Odin Project requirements because this is a bit harder. As an extra feature, it
-overloads the keypad to handle parentheses and square roots without needing more
-buttons. Snazzy!
+This is my version of the Odin Project Foundations course final project:
+[Calculator](https://www.theodinproject.com/lessons/foundations-calculator).
+I've made one large change to the requirements: I really wanted to implement
+infix operations with precedence. So I used a variation of Dijkstra's Shunting
+Yard algorithm, described in the first section below.
 
-## The basic idea
+On top of that layer I wrote a state machine to handle the buttons and display
+register. Each mode is an object whose methods handle state transitions,
+describe in the second section below.
 
-Evaluate an operation as soon as all its arguments are available. Keep a stack
-of operations that are waiting for their last argument. This means the stack can contain
+Graphic design is one of my weaker points, so rather than being too creative, I
+took a look at the HP-70 design for inspiration and added vaporwave.
 
- -  `(` unary identity
- -  `-(` unary negation
- -  `s(` unary positive square root
- -  `-s(` unary negative square root
- -  `N +` addition
- -  `N -` subtraction
- -  `N *` multiplication
- -  `N /` division
+[My self-evaluation of what I've learned writing this](./LESSONS.md)
 
-It also obeys the precedence stacking rules:
+## The Shuntyard
 
- -  unary operations can stack on anything
- -  addition and subtraction can only stack on unary ops
- -  multiplication and division can stack on unary or addition / subtraction
+The key idea is to divide the expression into tokens, simplify sub-expressions
+as soon as possible, and keep a last-in-first-out list of tokens that can't be
+simplified yet, which I call a `calcStack`. It's defined at lines 47-169. The
+possible tokens are as follows (`N` is any number):
 
-There's one more operation that can't go on the stack: `N )` This operation also
-implements the enter/equals key.  When an operation can't go on the stack it
-triggers an evaluation. Let's look at the example of `2 + 3 * 4 =`. It is scanned as
+ -  `(`
+ -  `-(`
+ -  `s(` [square root]
+ -  `-s(`
+ -  `N +`
+ -  `N -`
+ -  `N *`
+ -  `N /`
+ -  `N )`  [close parentheses or end of expression]
 
- - `2 +` (added to empty stack)
- - `3 *` (`*` stacks on `+`)
- - `4 )` (cannot stack, must evaluate)
- - evaluate: `2 +`, `3 *` | `4 )`
- - evaluate: `2 +` | `12 )`
- - `14 )` -> result is `14`
+Let's look at the example of `2 + 3 * 4 =`. It's tokenized as:
 
- Compare that to 2 * 3 + 4:
+ - `2 +`
+ - `3 *`
+ - `4 )`
 
- - `2 *` (added to empty stack)
- - `3 +` (`+` cannot stack on `*`)
- - evaluate: `2 *` | `3 +`
- - `6 +` on stack -> continue reading
- - `4 )` (must evaluate)
- - evaluate: `6 +` | `4 )`
- - `10 )` -> result is `10`
+When the first two tokens have been entered there's not yet enough information
+to begin evaluation. So a stack with `A + B *` on top must be considered fully
+simplified. Once the `4 )` is added, it creates subexpressions that can be
+simplified: `3 * 4 )` => `12 )` and `2 + 12 )` => `12) `. This last result
+state is passed back to the register layer, so the shuntyard stack doesn't ever
+hold onto an `N )` token.
 
-## Keypad overloading
+Compare that to 2 * 3 + 4:
 
-The keypad does different things depending on whether it's expecting a unary or
-binary operation. The binary operations are `+` `-` `×` `÷` but the same buttons
-are used for `|>` `-` `√(` and `(` respectively. The pipe triangle `|>` might not
-be familiar to some readers: it copies the result of a calculation into the next
-calculation.
+ - `2 *`
+ - `3 +`
+ - `4 )`
 
-(This operator is seen in some functional programming languages that I haven't
-learned yet. If I understand correctly, in ML-family languages like OCaml and F#
-instead of saying `f(x)` you can say either `f x` or `x |> f`)
+The sequence `2 * 3 +` can be simplified to `6 +`; or in other words, a stack
+with `A * B +` on top is not fully simplified. The `+` operation should check
+if it's being added on top of a `*` operation and if so simplify itself first.
+This logic is handled by the `_popOps()` method. Every binary token that can go
+on the stack first calls `_popOps()` to satisfy the precedence-stacking rules.
 
-The enter button displays `)` if there is a unary operation on the stack that it
-would match and `=` if not. If a binary operation can be repeated it switches to
-↫ until the user enters a number.
+Unary operations can't be simplified until the closing `)` is entered. And the
+`N )` token gets special handling in `popExec` because it needs to return a
+result value.
 
-#### Copyright, distribution, and hosting
+The shuntyard stack layer only cares about putting operations in the correct
+order, so it doesn't actually define addition, etc. That knowledge is passed
+into `defUnaOp` or `defBinOp`.
+
+## The Register-Calculator Layer
+
+A calculator object has a `stack` property and a `registerMode` property. The
+`registerMode` decides how to respond to various input events and what to
+display on the screen.
+
+Each of these behavior methods takes a `calc` parameter because the
+`registerMode` is logically part of the calculator object and needs to mutate
+it. I'm not sure if this is idiomatic JS or if it would be better to have a
+`calc` property within the mode object, but I do know that would create an
+object reference cycle that may be harder to garbage collect.
+
+`defUnaOp` and `defBinOp` are redefined in the register layer (as calculator
+methods). These method bodies read state from the register (input value,
+presence of a leading `-`) and call down to the stack layer.
+
+Finally the `wireCalculator()` free function assembles the whole thing. It's
+passed a DOM `<div>` that contains the calculator UI, creates the `calculator`
+object, and defines all the click handlers. This method body is also what says
+"addition adds numbers," etc. using curried functions to do so.
+
+#### Copyright
 
 Glasswings' Shuntyard Calculator is copyright 2022 by Glasswings
 <glasswings363@pm.me>

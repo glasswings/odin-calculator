@@ -1,7 +1,7 @@
-/*  Part of Glasswings' Shuntyard Calculator, Copyright 2022 by Glasswings
-    You can redistribute, host, and/or modify it under the GNU Affero General Public License
-    which should be hosted alongside it and its source code, but you can also get a copy
-    of the license or later versions from https://www.gnu.org/licenses/ */
+// Copyright 2022 by Glasswings
+// SPDX-FileCopyrightText: 2022 Glasswings
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 /* * *
  * Utility
@@ -12,6 +12,8 @@
  * the first
  *
  * @param n the number
+ * @param nDigits   the number of digits that may appear before switching to
+ *                  exponential notation, if the number is an integer
  */
 function formatNumber(n, nDigits) {
     const absN = Math.abs(n);
@@ -44,6 +46,10 @@ function formatNumber(n, nDigits) {
     }
 }
 
+/**
+ * Construct a calculator stack, the object that implements the shuntyard
+ * layer.
+ */
 const calcStack = () => ({
     _stack: [],
     _parenCount: 0,
@@ -71,11 +77,14 @@ const calcStack = () => ({
             return this._stack[l - 1].display;
         }
     },
+    /**
+     * Log the contents of the stack to console.
+     */
     debugStack: function() {
-        return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;;
+        return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;
     },
     /**
-     * Pop operations off the stack
+     * Pop operations off the stack, executing each one that is popped
      *
      * @param prec  precedence code of the incoming operation
      * @param n     last number entered
@@ -118,7 +127,8 @@ const calcStack = () => ({
         }
     },
     /**
-     * Define the minus variant of a unary operation
+     * Define the minus variant of a unary operation. Call with the same
+     * arguments as defUnaOp()
      *
      * @returns         a function that takes no arguments
      *                  and pushes the operation to the stack
@@ -151,7 +161,7 @@ const calcStack = () => ({
         }
     },
     /**
-     * Cancel the topmost operation, if it exists
+     * Cancel the topmost operation. If empty do nothing
      */
     popCancel: function() {
         const popped = this._stack.pop();
@@ -171,6 +181,17 @@ const calcStack = () => ({
 /* * *
  * Register display
  * * */
+
+/**
+ * The following implement the register mode interface
+ *
+ * clear():         implment the clear key
+ * isMinus:         true for minus mode
+ * pokeInput():     implement an input key
+ * pokeMinus():     implement unary minus
+ * render():        return the string that should be shown
+ * value:           the entered value
+ */
 
 const registerModeEmpty = () => ({
     render: function(calc) {
@@ -211,7 +232,7 @@ const registerModeResult = (v) => ({
         if (calc.stack.empty()) {
             return `=${formatNumber(v, 11)}`;
         } else {
-            return `)=${formatNumber(v, 11)}`
+            return `)=${formatNumber(v, 11)}`;
         }
     },
     clear: function(calc) {
@@ -226,7 +247,7 @@ const registerModeInput = (s) => ({
         if (this.text.length == 0)
             return '0';
         else
-            return this.text
+            return this.text;
     },
     clear: function(calc) {
         const l = this.text.length;
@@ -254,6 +275,9 @@ const registerModeInput = (s) => ({
     },
 });
 
+/**
+ * Construct calculator object
+ */
 const calculator = (calcDiv) => ({
     stack: calcStack(),
     registerMode: registerModeEmpty(),
@@ -276,15 +300,17 @@ const calculator = (calcDiv) => ({
         const visible = (p) => p ? 'inline' : 'none';
         const binary = this.hasValue();
         const paren = this.stack.hasParen();
+        const rules = {
+            una: visible(!binary),
+            bin: visible(binary),
+            eq: visible(!paren),
+            par: visible(paren),
+        };
         calcDiv.querySelectorAll('button span').forEach( (span) => {
-            if (span.classList.contains('una'))
-                span.style.display = visible(!binary);
-            else if (span.classList.contains('bin'))
-                span.style.display = visible(binary);
-            else if (span.classList.contains('eq'))
-                span.style.display = visible(!paren);
-            else if (span.classList.contains('par'))
-                span.style.display = visible(paren);
+            for (cls in rules) {
+                if (span.classList.contains(cls))
+                    span.style.display = rules[cls];
+            }
         });
     },
     /**
@@ -341,6 +367,10 @@ const calculator = (calcDiv) => ({
             this.setRegModeInput('');
         this.registerMode.pokeInput(this, ch);
     },
+    /**
+     * Define unary operation callback. Returns a function to be
+     * called when the user pushes a unary operation key
+     */
     defUnaOp: function(symbol, unaOp) {
         const calc = this;
         const stackOp = this.stack.defUnaOp(symbol, unaOp);
@@ -353,6 +383,10 @@ const calculator = (calcDiv) => ({
             calc.setRegModeEmpty();
         }
     },
+    /**
+     * Define binary operation callback. Returns a function to be
+     * called when the user pushes a binary operation key
+     */
     defBinOp: function(symbol, prec, binOp) {
         const calc = this;
         const stackOp = this.stack.defBinOp(symbol, prec, binOp);
@@ -389,7 +423,6 @@ function pokeMinus(calc) {
  */
 function wireCalculator(calcDiv) {
     const calc = calculator(calcDiv);
-    calculator_global = calc;
     // Ops to be executed when there is no value in the register
     const opsNoValue = {
         CLR: () => calc.registerMode.clear(calc),
