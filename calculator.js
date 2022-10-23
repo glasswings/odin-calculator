@@ -12,6 +12,8 @@
  * the first
  *
  * @param n the number
+ * @param nDigits   the number of digits that may appear before switching to
+ *                  exponential notation, if the number is an integer
  */
 function formatNumber(n, nDigits) {
     const absN = Math.abs(n);
@@ -44,6 +46,10 @@ function formatNumber(n, nDigits) {
     }
 }
 
+/**
+ * Construct a calculator stack, the object that implements the shuntyard
+ * layer.
+ */
 const calcStack = () => ({
     _stack: [],
     _parenCount: 0,
@@ -71,11 +77,14 @@ const calcStack = () => ({
             return this._stack[l - 1].display;
         }
     },
+    /**
+     * Log the contents of the stack to console.
+     */
     debugStack: function() {
         return `Stack:\n${this._stack.map((op) => op.display).join('\n')}`;
     },
     /**
-     * Pop operations off the stack
+     * Pop operations off the stack, executing each one that is popped
      *
      * @param prec  precedence code of the incoming operation
      * @param n     last number entered
@@ -118,7 +127,8 @@ const calcStack = () => ({
         }
     },
     /**
-     * Define the minus variant of a unary operation
+     * Define the minus variant of a unary operation. Call with the same
+     * arguments as defUnaOp()
      *
      * @returns         a function that takes no arguments
      *                  and pushes the operation to the stack
@@ -151,7 +161,7 @@ const calcStack = () => ({
         }
     },
     /**
-     * Cancel the topmost operation, if it exists
+     * Cancel the topmost operation. If empty do nothing
      */
     popCancel: function() {
         const popped = this._stack.pop();
@@ -171,6 +181,17 @@ const calcStack = () => ({
 /* * *
  * Register display
  * * */
+
+/**
+ * The following implement the register mode interface
+ *
+ * clear():         implment the clear key
+ * isMinus:         true for minus mode
+ * pokeInput():     implement an input key
+ * pokeMinus():     implement unary minus
+ * render():        return the string that should be shown
+ * value:           the entered value
+ */
 
 const registerModeEmpty = () => ({
     render: function(calc) {
@@ -254,6 +275,9 @@ const registerModeInput = (s) => ({
     },
 });
 
+/**
+ * Construct calculator object
+ */
 const calculator = (calcDiv) => ({
     stack: calcStack(),
     registerMode: registerModeEmpty(),
@@ -341,6 +365,10 @@ const calculator = (calcDiv) => ({
             this.setRegModeInput('');
         this.registerMode.pokeInput(this, ch);
     },
+    /**
+     * Define unary operation callback. Returns a function to be
+     * called when the user pushes a unary operation key
+     */
     defUnaOp: function(symbol, unaOp) {
         const calc = this;
         const stackOp = this.stack.defUnaOp(symbol, unaOp);
@@ -353,6 +381,10 @@ const calculator = (calcDiv) => ({
             calc.setRegModeEmpty();
         }
     },
+    /**
+     * Define binary operation callback. Returns a function to be
+     * called when the user pushes a binary operation key
+     */
     defBinOp: function(symbol, prec, binOp) {
         const calc = this;
         const stackOp = this.stack.defBinOp(symbol, prec, binOp);
