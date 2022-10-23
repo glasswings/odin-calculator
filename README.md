@@ -19,6 +19,8 @@ describe in the second section below.
 Graphic design is one of my weaker points, so rather than being too creative, I
 took a look at the HP-70 design for inspiration and added vaporwave.
 
+[My self-evaluation of what I've learned writing this](./LESSONS.md)
+
 ## The Shuntyard
 
 The key idea is to divide the expression into tokens, simplify sub-expressions
