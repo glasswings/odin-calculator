@@ -300,15 +300,17 @@ const calculator = (calcDiv) => ({
         const visible = (p) => p ? 'inline' : 'none';
         const binary = this.hasValue();
         const paren = this.stack.hasParen();
+        const rules = {
+            una: visible(!binary),
+            bin: visible(binary),
+            eq: visible(!paren),
+            par: visible(paren),
+        };
         calcDiv.querySelectorAll('button span').forEach( (span) => {
-            if (span.classList.contains('una'))
-                span.style.display = visible(!binary);
-            else if (span.classList.contains('bin'))
-                span.style.display = visible(binary);
-            else if (span.classList.contains('eq'))
-                span.style.display = visible(!paren);
-            else if (span.classList.contains('par'))
-                span.style.display = visible(paren);
+            for (cls in rules) {
+                if (span.classList.contains(cls))
+                    span.style.display = rules[cls];
+            }
         });
     },
     /**
