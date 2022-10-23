@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Glasswings
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Shuntyard Calculator
 
 This implements a classic computer science algorithm--and cheekily ignores the

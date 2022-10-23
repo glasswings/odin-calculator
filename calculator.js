@@ -1,7 +1,7 @@
-/*  Part of Glasswings' Shuntyard Calculator, Copyright 2022 by Glasswings
-    You can redistribute, host, and/or modify it under the GNU Affero General Public License
-    which should be hosted alongside it and its source code, but you can also get a copy
-    of the license or later versions from https://www.gnu.org/licenses/ */
+// Copyright 2022 by Glasswings
+// SPDX-FileCopyrightText: 2022 Glasswings
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 /* * *
  * Utility
